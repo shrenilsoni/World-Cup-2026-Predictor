@@ -1,0 +1,327 @@
+import sys
+import os
+import threading
+from pathlib import Path
+from contextlib import asynccontextmanager
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).parent.parent / ".env")
+
+sys.path.append(str(Path(__file__).parent.parent / "src"))
+
+from fastapi import FastAPI, HTTPException, Header
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+import json
+import datetime
+import pandas as pd
+
+from predict import (
+    load_artifacts, extract_groups, predict_match, predict_goals,
+    run_monte_carlo, build_group_fixture_lists,
+    _assign_thirds_to_slots
+)
+from live_update import update_results
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    import asyncio
+    print("Warming up simulation cache at startup…")
+    await asyncio.to_thread(_get_sim)
+    print("Simulation cache ready.")
+    yield
+
+
+app = FastAPI(title="WC 2026 Predictor", lifespan=lifespan)
+
+# ---------------------------------------------------------------------------
+# Startup — load everything once
+# ---------------------------------------------------------------------------
+
+def _load_all_wc_fixtures():
+    """All WC 2026 group stage rows, played or not — used for group extraction and team list."""
+    raw = pd.read_csv(Path(__file__).parent.parent / "data" / "raw" / "results.csv")
+    return raw[(raw["tournament"] == "FIFA World Cup") & (raw["date"] >= "2026-01-01")].copy()
+
+
+artifacts, team_stats, fixtures, goal_model_h, goal_model_a, goal_feat_h, goal_feat_a = load_artifacts()
+model        = artifacts["model"]
+feature_cols = artifacts["features"]
+classes      = artifacts["classes"]
+_all_wc      = _load_all_wc_fixtures()
+groups       = extract_groups(_all_wc)
+wc_teams     = sorted(set(_all_wc["home_team"].tolist() + _all_wc["away_team"].tolist()))
+
+_sim_cache = None  # invalidated on live update
+_sim_lock = threading.Lock()
+
+
+def _get_sim():
+    global _sim_cache
+    if _sim_cache is not None:
+        return _sim_cache
+    with _sim_lock:
+        if _sim_cache is None:  # double-checked locking
+            print("Running Monte Carlo simulation...")
+            _sim_cache = run_monte_carlo(
+                fixtures, groups, model, feature_cols, classes, team_stats, n=10000
+            )
+    return _sim_cache
+
+
+def _invalidate_cache():
+    """Called after a live update rewrites team_stats."""
+    global _sim_cache, team_stats, fixtures, groups, wc_teams
+    global goal_model_h, goal_model_a, goal_feat_h, goal_feat_a
+    _sim_cache = None
+    # Reload team stats and fixtures from disk
+    with open(Path(__file__).parent.parent / "data" / "processed" / "team_stats.json") as f:
+        team_stats = json.load(f)
+    import pandas as pd
+    raw = pd.read_csv(Path(__file__).parent.parent / "data" / "raw" / "results.csv")
+    fixtures = raw[raw["home_score"].isna()].copy()
+    _all_wc  = _load_all_wc_fixtures()
+    groups   = extract_groups(_all_wc)
+    wc_teams = sorted(set(_all_wc["home_team"].tolist() + _all_wc["away_team"].tolist()))
+    # Reload goal models from pkl
+    new_artifacts, _, _, gm_h, gm_a, gf_h, gf_a = load_artifacts()
+    goal_model_h = gm_h
+    goal_model_a = gm_a
+    goal_feat_h  = gf_h
+    goal_feat_a  = gf_a
+
+
+# ---------------------------------------------------------------------------
+# Models
+# ---------------------------------------------------------------------------
+
+class MatchRequest(BaseModel):
+    home_team: str
+    away_team: str
+    neutral: bool = True
+
+
+# ---------------------------------------------------------------------------
+# Endpoints
+# ---------------------------------------------------------------------------
+
+@app.get("/api/teams")
+def get_teams():
+    teams_with_elo = [
+        {"name": t, "elo": round(team_stats.get(t, {}).get("elo", 1500), 1)}
+        for t in wc_teams
+    ]
+    teams_with_elo.sort(key=lambda x: x["elo"], reverse=True)
+    return {"teams": teams_with_elo}
+
+
+@app.post("/api/predict")
+def predict(req: MatchRequest):
+    probs = predict_match(
+        req.home_team, req.away_team, req.neutral,
+        model, feature_cols, classes, team_stats
+    )
+
+    goal_data = None
+    if goal_model_h and goal_model_a:
+        goal_data = predict_goals(
+            req.home_team, req.away_team, req.neutral,
+            goal_model_h, goal_model_a, goal_feat_h, goal_feat_a, team_stats
+        )
+
+    # Use Poisson-derived win/draw/loss in probabilities if available
+    if goal_data:
+        outcome_probs = {
+            "home_win": goal_data["home_win_pct"],
+            "draw":     goal_data["draw_pct"],
+            "away_win": goal_data["away_win_pct"],
+        }
+    else:
+        outcome_probs = {k: round(v * 100, 1) for k, v in probs.items()}
+
+    return {
+        "home_team": req.home_team,
+        "away_team": req.away_team,
+        "neutral": req.neutral,
+        "home_elo": round(team_stats.get(req.home_team, {}).get("elo", 1500), 1),
+        "away_elo": round(team_stats.get(req.away_team, {}).get("elo", 1500), 1),
+        "probabilities": outcome_probs,
+        "goals": goal_data,
+    }
+
+
+@app.get("/api/simulate")
+def simulate():
+    results = _get_sim()
+    return {"simulations": 10000, "results": results}
+
+
+@app.get("/api/matches")
+def get_matches():
+    """
+    All WC 2026 matches with results and lock status.
+    is_locked = match date has passed OR result already in system.
+    Used by the My Picks tab to render pick forms and show scores.
+    """
+    today    = datetime.date.today().isoformat()
+    tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
+    df = pd.read_csv(Path(__file__).parent.parent / "data" / "raw" / "results.csv")
+    wc = df[(df["tournament"] == "FIFA World Cup") & (df["date"] >= "2026-01-01")]
+    wc = wc.sort_values("date").reset_index(drop=True)
+
+    result = []
+    for idx, row in wc.iterrows():
+        has_result = pd.notna(row.get("home_score"))
+        result.append({
+            "match_id":   f"{row['date']}_{row['home_team']}_{row['away_team']}",
+            "match_index": int(idx),
+            "date":       str(row["date"]),
+            "home_team":  row["home_team"],
+            "away_team":  row["away_team"],
+            "home_score": int(row["home_score"]) if has_result else None,
+            "away_score": int(row["away_score"]) if has_result else None,
+            "is_locked":  bool(str(row["date"]) <= tomorrow or has_result),
+            "neutral":    bool(row["neutral"]),
+            "city":       row.get("city", ""),
+        })
+    return {"matches": result, "today": today}
+
+
+@app.get("/api/bracket")
+def get_bracket():
+    """
+    Build the predicted bracket using official FIFA WC 2026 R32 structure.
+    Uses simulation probabilities to pick the most likely team per slot
+    and to compute head-to-head win odds at each match.
+    """
+    sim    = _get_sim()
+    by_team = {r['team']: r for r in sim}
+
+    A,B,C,D,E,F,G,H,I,J,K,L = range(12)
+
+    # Predict each group's finishing order — each team appears exactly once
+    firsts, seconds, thirds_candidates = [], [], []
+    for g_idx, group in enumerate(groups):
+        ranked = sorted(group, key=lambda t: by_team.get(t, {}).get('group_1st_pct', 0), reverse=True)
+        firsts.append(ranked[0])
+        rest = [t for t in group if t != ranked[0]]
+        second = max(rest, key=lambda t: by_team.get(t, {}).get('group_2nd_pct', 0))
+        seconds.append(second)
+        rest2 = [t for t in rest if t != second]
+        third = max(rest2, key=lambda t: by_team.get(t, {}).get('group_3rd_pct', 0))
+        thirds_candidates.append((third, g_idx))
+
+    thirds_candidates.sort(key=lambda x: by_team.get(x[0], {}).get('group_3rd_pct', 0), reverse=True)
+    best_thirds = thirds_candidates[:8]
+    slot_assignment = _assign_thirds_to_slots(best_thirds)
+
+    def t3(s): return slot_assignment[s]
+
+    def match(t1, t2):
+        if not t1 or not t2:
+            return {'team1': t1, 'team2': t2, 'winner': t1 or t2, 'p1': 100, 'p2': 0}
+        s1 = max(by_team.get(t1, {}).get('champion_pct', 0), 0.1)
+        s2 = max(by_team.get(t2, {}).get('champion_pct', 0), 0.1)
+        p1 = round(s1 / (s1 + s2) * 100)
+        return {'team1': t1, 'team2': t2, 'winner': t1 if p1 >= 50 else t2, 'p1': p1, 'p2': 100 - p1}
+
+    def advance(matches):
+        pairs = [(matches[i]['winner'], matches[i+1]['winner']) for i in range(0, len(matches), 2)]
+        return [match(a, b) for a, b in pairs]
+
+    r32 = [
+        match(firsts[E],  t3(0)),          # left  — 1E  vs 3ABCDF
+        match(firsts[I],  t3(1)),          # left  — 1I  vs 3CDFGH
+        match(seconds[A], seconds[B]),     # left  — 2A  vs 2B
+        match(firsts[F],  seconds[C]),     # left  — 1F  vs 2C
+        match(seconds[K], seconds[L]),     # left  — 2K  vs 2L
+        match(firsts[H],  seconds[J]),     # left  — 1H  vs 2J
+        match(firsts[D],  t3(2)),          # left  — 1D  vs 3BEFIJ
+        match(firsts[G],  t3(3)),          # left  — 1G  vs 3AEHIJ
+        match(firsts[C],  seconds[F]),     # right — 1C  vs 2F
+        match(seconds[E], seconds[I]),     # right — 2E  vs 2I
+        match(firsts[A],  t3(4)),          # right — 1A  vs 3CEFHI
+        match(firsts[L],  t3(5)),          # right — 1L  vs 3EHIJK
+        match(firsts[J],  seconds[H]),     # right — 1J  vs 2H
+        match(seconds[D], seconds[G]),     # right — 2D  vs 2G
+        match(firsts[B],  t3(6)),          # right — 1B  vs 3EFGIJ
+        match(firsts[K],  t3(7)),          # right — 1K  vs 3DEIJL
+    ]
+
+    r16   = advance(r32)
+    qf    = advance(r16)
+    sf    = advance(qf)
+    final = advance(sf)
+
+    return {
+        'r32':     r32,
+        'r16':     r16,
+        'qf':      qf,
+        'sf':      sf,
+        'final':   final,
+        'champion': final[0]['winner'] if final else None,
+    }
+
+
+@app.get("/api/groups")
+def get_groups():
+    """Return group structure + per-team predicted finish probabilities."""
+    sim = _get_sim()
+    sim_by_team = {r["team"]: r for r in sim}
+
+    groups_data = []
+    for i, group in enumerate(groups):
+        teams_data = []
+        for team in group:
+            s = sim_by_team.get(team, {})
+            ts = team_stats.get(team, {})
+            teams_data.append({
+                "name": team,
+                "elo": round(ts.get("elo", 1500), 1),
+                "form": round(ts.get("form", 0.5), 2),
+                "pred_1st": s.get("group_1st_pct", 0),
+                "pred_2nd": s.get("group_2nd_pct", 0),
+                "pred_3rd": s.get("group_3rd_pct", 0),
+                "pred_4th": s.get("group_4th_pct", 0),
+                "advance_pct": round(
+                    s.get("group_1st_pct", 0) + s.get("group_2nd_pct", 0), 1
+                ),
+            })
+        # Sort by ELO descending for display
+        teams_data.sort(key=lambda x: x["elo"], reverse=True)
+        groups_data.append({
+            "name": chr(65 + i),
+            "teams": teams_data,
+        })
+
+    return {"groups": groups_data}
+
+
+@app.post("/api/update")
+def live_update(x_api_key: str = Header(default=None)):
+    """Pull latest WC results from football-data.org and invalidate sim cache."""
+    api_key = x_api_key or os.environ.get("FOOTBALL_DATA_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=400, detail="FOOTBALL_DATA_API_KEY not set")
+
+    result = update_results(api_key)
+    if result.get("error"):
+        raise HTTPException(status_code=502, detail=result["error"])
+
+    if result["updated"] > 0:
+        _invalidate_cache()
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Frontend — must come last so API routes take priority
+# ---------------------------------------------------------------------------
+
+app.mount(
+    "/",
+    StaticFiles(directory=Path(__file__).parent / "static", html=True),
+    name="static",
+)

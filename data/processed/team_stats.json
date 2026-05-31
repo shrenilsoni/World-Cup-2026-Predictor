@@ -1,0 +1,2333 @@
+{
+  "Scotland": {
+    "elo": 1738.0637,
+    "form": 0.5,
+    "gd": 0.6,
+    "avg_scored": 1.8,
+    "avg_conceded": 1.2
+  },
+  "England": {
+    "elo": 1941.1581,
+    "form": 0.7,
+    "gd": 1.7,
+    "avg_scored": 2.2,
+    "avg_conceded": 0.5
+  },
+  "Wales": {
+    "elo": 1720.148,
+    "form": 0.4,
+    "gd": 0.4,
+    "avg_scored": 1.9,
+    "avg_conceded": 1.5
+  },
+  "Northern Ireland": {
+    "elo": 1615.3666,
+    "form": 0.4,
+    "gd": -0.1,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.1
+  },
+  "United States": {
+    "elo": 1810.386,
+    "form": 0.5,
+    "gd": 0.1,
+    "avg_scored": 1.7,
+    "avg_conceded": 1.6
+  },
+  "Canada": {
+    "elo": 1812.4194,
+    "form": 0.4,
+    "gd": 0.7,
+    "avg_scored": 1.1,
+    "avg_conceded": 0.4
+  },
+  "Uruguay": {
+    "elo": 1859.337,
+    "form": 0.4,
+    "gd": 0.1,
+    "avg_scored": 1.0,
+    "avg_conceded": 0.9
+  },
+  "Argentina": {
+    "elo": 2050.8106,
+    "form": 0.8,
+    "gd": 2.1,
+    "avg_scored": 2.5,
+    "avg_conceded": 0.4
+  },
+  "Austria": {
+    "elo": 1837.4839,
+    "form": 0.8,
+    "gd": 2.3,
+    "avg_scored": 2.8,
+    "avg_conceded": 0.5
+  },
+  "Hungary": {
+    "elo": 1754.5321,
+    "form": 0.4,
+    "gd": 0.1,
+    "avg_scored": 1.4,
+    "avg_conceded": 1.3
+  },
+  "Czechoslovakia": {
+    "elo": 1705.8525,
+    "form": 0.4,
+    "gd": 1.2,
+    "avg_scored": 2.1,
+    "avg_conceded": 0.9
+  },
+  "Belgium": {
+    "elo": 1862.0825,
+    "form": 0.6,
+    "gd": 2.5,
+    "avg_scored": 3.5,
+    "avg_conceded": 1.0
+  },
+  "France": {
+    "elo": 2018.4422,
+    "form": 0.8,
+    "gd": 1.6,
+    "avg_scored": 2.7,
+    "avg_conceded": 1.1
+  },
+  "Switzerland": {
+    "elo": 1850.2376,
+    "form": 0.6,
+    "gd": 1.7,
+    "avg_scored": 2.5,
+    "avg_conceded": 0.8
+  },
+  "Guernsey": {
+    "elo": 1685.0556,
+    "form": 0.6,
+    "gd": 1.3,
+    "avg_scored": 2.3,
+    "avg_conceded": 1.0
+  },
+  "Alderney": {
+    "elo": 1145.282,
+    "form": 0.2,
+    "gd": -2.3,
+    "avg_scored": 0.9,
+    "avg_conceded": 3.2
+  },
+  "Jersey": {
+    "elo": 1746.3407,
+    "form": 0.8,
+    "gd": 1.7,
+    "avg_scored": 2.7,
+    "avg_conceded": 1.0
+  },
+  "Netherlands": {
+    "elo": 1936.9167,
+    "form": 0.7,
+    "gd": 2.4,
+    "avg_scored": 3.0,
+    "avg_conceded": 0.6
+  },
+  "Guyana": {
+    "elo": 1455.6288,
+    "form": 0.8,
+    "gd": 1.4,
+    "avg_scored": 2.6,
+    "avg_conceded": 1.2
+  },
+  "Trinidad and Tobago": {
+    "elo": 1507.9098,
+    "form": 0.1,
+    "gd": -0.5,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.6
+  },
+  "Germany": {
+    "elo": 1938.2599,
+    "form": 0.7,
+    "gd": 1.2,
+    "avg_scored": 2.3,
+    "avg_conceded": 1.1
+  },
+  "Sweden": {
+    "elo": 1764.2736,
+    "form": 0.4,
+    "gd": -0.2,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.8
+  },
+  "Norway": {
+    "elo": 1835.1187,
+    "form": 0.7,
+    "gd": 2.5,
+    "avg_scored": 3.1,
+    "avg_conceded": 0.6
+  },
+  "Denmark": {
+    "elo": 1854.6075,
+    "form": 0.6,
+    "gd": 1.9,
+    "avg_scored": 2.9,
+    "avg_conceded": 1.0
+  },
+  "Italy": {
+    "elo": 1887.2911,
+    "form": 0.7,
+    "gd": 1.1,
+    "avg_scored": 2.4,
+    "avg_conceded": 1.3
+  },
+  "Chile": {
+    "elo": 1740.8944,
+    "form": 0.4,
+    "gd": -0.3,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.4
+  },
+  "Russia": {
+    "elo": 1798.5154,
+    "form": 0.5,
+    "gd": 1.0,
+    "avg_scored": 1.8,
+    "avg_conceded": 0.8
+  },
+  "Finland": {
+    "elo": 1583.899,
+    "form": 0.4,
+    "gd": -0.2,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.4
+  },
+  "Luxembourg": {
+    "elo": 1465.8378,
+    "form": 0.1,
+    "gd": -1.4,
+    "avg_scored": 0.3,
+    "avg_conceded": 1.7
+  },
+  "Catalonia": {
+    "elo": 1709.6033,
+    "form": 0.5,
+    "gd": 1.0,
+    "avg_scored": 2.1,
+    "avg_conceded": 1.1
+  },
+  "Philippines": {
+    "elo": 1359.26,
+    "form": 0.6,
+    "gd": 1.0,
+    "avg_scored": 2.1,
+    "avg_conceded": 1.1
+  },
+  "China PR": {
+    "elo": 1540.9116,
+    "form": 0.4,
+    "gd": -0.3,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.2
+  },
+  "Brazil": {
+    "elo": 1937.192,
+    "form": 0.5,
+    "gd": 1.0,
+    "avg_scored": 1.8,
+    "avg_conceded": 0.8
+  },
+  "Basque Country": {
+    "elo": 1790.3186,
+    "form": 0.6,
+    "gd": 1.5,
+    "avg_scored": 2.4,
+    "avg_conceded": 0.9
+  },
+  "Japan": {
+    "elo": 1914.9476,
+    "form": 0.6,
+    "gd": 1.1,
+    "avg_scored": 1.8,
+    "avg_conceded": 0.7
+  },
+  "Paraguay": {
+    "elo": 1797.2123,
+    "form": 0.4,
+    "gd": 0.0,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.0
+  },
+  "Romania": {
+    "elo": 1642.2602,
+    "form": 0.4,
+    "gd": 0.1,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.5
+  },
+  "Greece": {
+    "elo": 1749.4833,
+    "form": 0.4,
+    "gd": 0.4,
+    "avg_scored": 1.8,
+    "avg_conceded": 1.4
+  },
+  "Yugoslavia": {
+    "elo": 1732.1193,
+    "form": 0.4,
+    "gd": 0.8,
+    "avg_scored": 2.1,
+    "avg_conceded": 1.3
+  },
+  "Spain": {
+    "elo": 2064.4772,
+    "form": 0.7,
+    "gd": 2.3,
+    "avg_scored": 3.1,
+    "avg_conceded": 0.8
+  },
+  "Egypt": {
+    "elo": 1746.6486,
+    "form": 0.5,
+    "gd": 0.5,
+    "avg_scored": 1.3,
+    "avg_conceded": 0.8
+  },
+  "Estonia": {
+    "elo": 1437.1646,
+    "form": 0.1,
+    "gd": -1.3,
+    "avg_scored": 0.9,
+    "avg_conceded": 2.2
+  },
+  "Suriname": {
+    "elo": 1534.7727,
+    "form": 0.2,
+    "gd": -0.1,
+    "avg_scored": 1.3,
+    "avg_conceded": 1.4
+  },
+  "Provence": {
+    "elo": 1447.2187,
+    "form": 0.3,
+    "gd": 0.9,
+    "avg_scored": 3.6,
+    "avg_conceded": 2.7
+  },
+  "Costa Rica": {
+    "elo": 1672.1523,
+    "form": 0.1,
+    "gd": -0.3,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.5
+  },
+  "El Salvador": {
+    "elo": 1472.6432,
+    "form": 0.2,
+    "gd": -1.2,
+    "avg_scored": 0.5,
+    "avg_conceded": 1.7
+  },
+  "Guatemala": {
+    "elo": 1589.1482,
+    "form": 0.3,
+    "gd": -0.6,
+    "avg_scored": 1.3,
+    "avg_conceded": 1.9
+  },
+  "Portugal": {
+    "elo": 1947.0179,
+    "form": 0.6,
+    "gd": 1.6,
+    "avg_scored": 2.6,
+    "avg_conceded": 1.0
+  },
+  "Poland": {
+    "elo": 1775.832,
+    "form": 0.6,
+    "gd": 0.7,
+    "avg_scored": 1.8,
+    "avg_conceded": 1.1
+  },
+  "Brittany": {
+    "elo": 1528.9848,
+    "form": 0.4,
+    "gd": -0.1,
+    "avg_scored": 1.3,
+    "avg_conceded": 1.4
+  },
+  "New Zealand": {
+    "elo": 1649.2995,
+    "form": 0.2,
+    "gd": -0.6,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.5
+  },
+  "Australia": {
+    "elo": 1812.8644,
+    "form": 0.7,
+    "gd": 0.6,
+    "avg_scored": 1.5,
+    "avg_conceded": 0.9
+  },
+  "Latvia": {
+    "elo": 1386.0198,
+    "form": 0.1,
+    "gd": -1.0,
+    "avg_scored": 0.5,
+    "avg_conceded": 1.5
+  },
+  "Galicia": {
+    "elo": 1551.6272,
+    "form": 0.4,
+    "gd": -0.1,
+    "avg_scored": 1.9,
+    "avg_conceded": 2.0
+  },
+  "Central Spain": {
+    "elo": 1501.3703,
+    "form": 0.5,
+    "gd": -1.0,
+    "avg_scored": 1.0,
+    "avg_conceded": 2.0
+  },
+  "Mexico": {
+    "elo": 1853.8678,
+    "form": 0.3,
+    "gd": 0.1,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.0
+  },
+  "Andalusia": {
+    "elo": 1630.6675,
+    "form": 0.8,
+    "gd": 1.4,
+    "avg_scored": 2.3,
+    "avg_conceded": 0.9
+  },
+  "Asturias": {
+    "elo": 1517.4359,
+    "form": 1.0,
+    "gd": 2.0,
+    "avg_scored": 3.0,
+    "avg_conceded": 1.0
+  },
+  "Lithuania": {
+    "elo": 1381.1311,
+    "form": 0.1,
+    "gd": -1.3,
+    "avg_scored": 0.6,
+    "avg_conceded": 1.9
+  },
+  "Turkey": {
+    "elo": 1860.789,
+    "form": 0.7,
+    "gd": 0.7,
+    "avg_scored": 2.1,
+    "avg_conceded": 1.4
+  },
+  "Aruba": {
+    "elo": 1247.8403,
+    "form": 0.4,
+    "gd": -0.2,
+    "avg_scored": 1.8,
+    "avg_conceded": 2.0
+  },
+  "Cura\u00e7ao": {
+    "elo": 1521.2563,
+    "form": 0.3,
+    "gd": 0.3,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.3
+  },
+  "Bulgaria": {
+    "elo": 1554.4822,
+    "form": 0.3,
+    "gd": -1.1,
+    "avg_scored": 1.6,
+    "avg_conceded": 2.7
+  },
+  "Republic of Ireland": {
+    "elo": 1702.35,
+    "form": 0.3,
+    "gd": 0.2,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.0
+  },
+  "South Africa": {
+    "elo": 1631.4137,
+    "form": 0.4,
+    "gd": 0.4,
+    "avg_scored": 1.5,
+    "avg_conceded": 1.1
+  },
+  "Haiti": {
+    "elo": 1597.4817,
+    "form": 0.3,
+    "gd": 0.1,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.1
+  },
+  "Jamaica": {
+    "elo": 1631.6922,
+    "form": 0.5,
+    "gd": 0.6,
+    "avg_scored": 1.4,
+    "avg_conceded": 0.8
+  },
+  "Kenya": {
+    "elo": 1477.0405,
+    "form": 0.4,
+    "gd": -0.4,
+    "avg_scored": 1.4,
+    "avg_conceded": 1.8
+  },
+  "Uganda": {
+    "elo": 1491.2342,
+    "form": 0.4,
+    "gd": -0.1,
+    "avg_scored": 1.4,
+    "avg_conceded": 1.5
+  },
+  "Bolivia": {
+    "elo": 1647.879,
+    "form": 0.4,
+    "gd": -0.4,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.3
+  },
+  "Peru": {
+    "elo": 1686.0223,
+    "form": 0.0,
+    "gd": -0.9,
+    "avg_scored": 0.5,
+    "avg_conceded": 1.4
+  },
+  "Honduras": {
+    "elo": 1624.1242,
+    "form": 0.3,
+    "gd": 0.3,
+    "avg_scored": 1.0,
+    "avg_conceded": 0.7
+  },
+  "Belarus": {
+    "elo": 1551.4841,
+    "form": 0.3,
+    "gd": -1.1,
+    "avg_scored": 1.2,
+    "avg_conceded": 2.3
+  },
+  "Ukraine": {
+    "elo": 1775.3613,
+    "form": 0.5,
+    "gd": -0.3,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.9
+  },
+  "Barbados": {
+    "elo": 1198.0226,
+    "form": 0.1,
+    "gd": -1.1,
+    "avg_scored": 1.2,
+    "avg_conceded": 2.3
+  },
+  "Nicaragua": {
+    "elo": 1458.11,
+    "form": 0.2,
+    "gd": -1.2,
+    "avg_scored": 0.7,
+    "avg_conceded": 1.9
+  },
+  "Cuba": {
+    "elo": 1396.3854,
+    "form": 0.3,
+    "gd": -0.9,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.9
+  },
+  "Martinique": {
+    "elo": 1445.4056,
+    "form": 0.1,
+    "gd": -0.6,
+    "avg_scored": 0.6,
+    "avg_conceded": 1.2
+  },
+  "Dominica": {
+    "elo": 1224.9679,
+    "form": 0.1,
+    "gd": -1.1,
+    "avg_scored": 0.7,
+    "avg_conceded": 1.8
+  },
+  "Silesia": {
+    "elo": 1516.9807,
+    "form": 0.375,
+    "gd": 0.875,
+    "avg_scored": 3.0,
+    "avg_conceded": 2.125
+  },
+  "Guadeloupe": {
+    "elo": 1492.4442,
+    "form": 0.5,
+    "gd": 0.4,
+    "avg_scored": 1.5,
+    "avg_conceded": 1.1
+  },
+  "Israel": {
+    "elo": 1628.1119,
+    "form": 0.4,
+    "gd": -0.1,
+    "avg_scored": 2.0,
+    "avg_conceded": 2.1
+  },
+  "Indonesia": {
+    "elo": 1477.4033,
+    "form": 0.4,
+    "gd": -0.1,
+    "avg_scored": 1.5,
+    "avg_conceded": 1.6
+  },
+  "French Guiana": {
+    "elo": 1403.7089,
+    "form": 0.3,
+    "gd": 0.2,
+    "avg_scored": 1.7,
+    "avg_conceded": 1.5
+  },
+  "Saint Lucia": {
+    "elo": 1293.0621,
+    "form": 0.3,
+    "gd": -2.2,
+    "avg_scored": 0.9,
+    "avg_conceded": 3.1
+  },
+  "Colombia": {
+    "elo": 1924.5517,
+    "form": 0.5,
+    "gd": 1.1,
+    "avg_scored": 2.1,
+    "avg_conceded": 1.0
+  },
+  "Panama": {
+    "elo": 1732.1097,
+    "form": 0.4,
+    "gd": 0.5,
+    "avg_scored": 1.3,
+    "avg_conceded": 0.8
+  },
+  "Venezuela": {
+    "elo": 1742.0363,
+    "form": 0.4,
+    "gd": -0.4,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.5
+  },
+  "Ecuador": {
+    "elo": 1889.5341,
+    "form": 0.2,
+    "gd": 0.3,
+    "avg_scored": 0.7,
+    "avg_conceded": 0.4
+  },
+  "Saint Kitts and Nevis": {
+    "elo": 1331.917,
+    "form": 0.4,
+    "gd": -0.6,
+    "avg_scored": 2.1,
+    "avg_conceded": 2.7
+  },
+  "Grenada": {
+    "elo": 1322.0947,
+    "form": 0.5,
+    "gd": 0.1,
+    "avg_scored": 1.8,
+    "avg_conceded": 1.7
+  },
+  "India": {
+    "elo": 1319.8044,
+    "form": 0.1,
+    "gd": -0.5,
+    "avg_scored": 0.7,
+    "avg_conceded": 1.2
+  },
+  "Slovakia": {
+    "elo": 1692.1573,
+    "form": 0.5,
+    "gd": -0.5,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.7
+  },
+  "Manchukuo": {
+    "elo": 1451.8406,
+    "form": 0.0,
+    "gd": -5.3333,
+    "avg_scored": 0.0,
+    "avg_conceded": 5.3333
+  },
+  "Croatia": {
+    "elo": 1902.212,
+    "form": 0.8,
+    "gd": 2.1,
+    "avg_scored": 2.9,
+    "avg_conceded": 0.8
+  },
+  "Lebanon": {
+    "elo": 1428.9096,
+    "form": 0.5,
+    "gd": 1.6,
+    "avg_scored": 2.1,
+    "avg_conceded": 0.5
+  },
+  "Puerto Rico": {
+    "elo": 1376.8715,
+    "form": 0.4,
+    "gd": -0.1,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.7
+  },
+  "Afghanistan": {
+    "elo": 1235.9404,
+    "form": 0.1,
+    "gd": -0.8,
+    "avg_scored": 0.5,
+    "avg_conceded": 1.3
+  },
+  "Iran": {
+    "elo": 1814.1159,
+    "form": 0.4,
+    "gd": 0.9,
+    "avg_scored": 1.6,
+    "avg_conceded": 0.7
+  },
+  "Mongolia": {
+    "elo": 1101.1503,
+    "form": 0.2,
+    "gd": -1.5,
+    "avg_scored": 0.5,
+    "avg_conceded": 2.0
+  },
+  "Tanzania": {
+    "elo": 1395.505,
+    "form": 0.1,
+    "gd": -0.2,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.4
+  },
+  "Zimbabwe": {
+    "elo": 1446.7407,
+    "form": 0.2,
+    "gd": -0.3,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.3
+  },
+  "Zambia": {
+    "elo": 1511.863,
+    "form": 0.1,
+    "gd": -1.8,
+    "avg_scored": 0.5,
+    "avg_conceded": 2.3
+  },
+  "Iceland": {
+    "elo": 1603.1854,
+    "form": 0.2,
+    "gd": -0.3,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.9
+  },
+  "Albania": {
+    "elo": 1658.3071,
+    "form": 0.5,
+    "gd": 0.2,
+    "avg_scored": 1.0,
+    "avg_conceded": 0.8
+  },
+  "Montenegro": {
+    "elo": 1532.2615,
+    "form": 0.3,
+    "gd": -1.0,
+    "avg_scored": 1.2,
+    "avg_conceded": 2.2
+  },
+  "Madagascar": {
+    "elo": 1485.637,
+    "form": 0.6,
+    "gd": 0.5,
+    "avg_scored": 2.1,
+    "avg_conceded": 1.6
+  },
+  "Mauritius": {
+    "elo": 1251.537,
+    "form": 0.1,
+    "gd": -0.9,
+    "avg_scored": 0.6,
+    "avg_conceded": 1.5
+  },
+  "R\u00e9union": {
+    "elo": 1552.1322,
+    "form": 0.5,
+    "gd": 1.0,
+    "avg_scored": 1.6,
+    "avg_conceded": 0.6
+  },
+  "Zanzibar": {
+    "elo": 1519.9502,
+    "form": 0.6,
+    "gd": 0.5,
+    "avg_scored": 1.3,
+    "avg_conceded": 0.8
+  },
+  "Djibouti": {
+    "elo": 1130.2399,
+    "form": 0.0,
+    "gd": -2.2,
+    "avg_scored": 0.5,
+    "avg_conceded": 2.7
+  },
+  "Ethiopia": {
+    "elo": 1395.5721,
+    "form": 0.3,
+    "gd": -0.9,
+    "avg_scored": 1.1,
+    "avg_conceded": 2.0
+  },
+  "DR Congo": {
+    "elo": 1684.7514,
+    "form": 0.7,
+    "gd": 0.9,
+    "avg_scored": 1.2,
+    "avg_conceded": 0.3
+  },
+  "South Korea": {
+    "elo": 1817.3369,
+    "form": 0.6,
+    "gd": 0.3,
+    "avg_scored": 1.5,
+    "avg_conceded": 1.2
+  },
+  "Vietnam": {
+    "elo": 1530.1978,
+    "form": 0.9,
+    "gd": 1.4,
+    "avg_scored": 2.4,
+    "avg_conceded": 1.0
+  },
+  "Macau": {
+    "elo": 986.5316,
+    "form": 0.0,
+    "gd": -2.5,
+    "avg_scored": 0.3,
+    "avg_conceded": 2.8
+  },
+  "Dominican Republic": {
+    "elo": 1463.3711,
+    "form": 0.2,
+    "gd": 0.1,
+    "avg_scored": 1.3,
+    "avg_conceded": 1.2
+  },
+  "Cyprus": {
+    "elo": 1412.7624,
+    "form": 0.2,
+    "gd": -0.3,
+    "avg_scored": 1.5,
+    "avg_conceded": 1.8
+  },
+  "Sierra Leone": {
+    "elo": 1435.2505,
+    "form": 0.4,
+    "gd": 0.2,
+    "avg_scored": 1.1,
+    "avg_conceded": 0.9
+  },
+  "Nigeria": {
+    "elo": 1755.3443,
+    "form": 0.6,
+    "gd": 1.1,
+    "avg_scored": 1.9,
+    "avg_conceded": 0.8
+  },
+  "Syria": {
+    "elo": 1544.5499,
+    "form": 0.5,
+    "gd": 1.2,
+    "avg_scored": 2.0,
+    "avg_conceded": 0.8
+  },
+  "Serbia": {
+    "elo": 1783.8798,
+    "form": 0.5,
+    "gd": -0.3,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.4
+  },
+  "Taiwan": {
+    "elo": 1185.7494,
+    "form": 0.2,
+    "gd": -1.5,
+    "avg_scored": 1.4,
+    "avg_conceded": 2.9
+  },
+  "Ghana": {
+    "elo": 1566.9317,
+    "form": 0.4,
+    "gd": 0.2,
+    "avg_scored": 1.5,
+    "avg_conceded": 1.3
+  },
+  "Myanmar": {
+    "elo": 1223.5116,
+    "form": 0.3,
+    "gd": -1.1,
+    "avg_scored": 1.1,
+    "avg_conceded": 2.2
+  },
+  "New Caledonia": {
+    "elo": 1533.494,
+    "form": 0.6,
+    "gd": 1.3,
+    "avg_scored": 2.3,
+    "avg_conceded": 1.0
+  },
+  "Vanuatu": {
+    "elo": 1438.4849,
+    "form": 0.3,
+    "gd": -1.0,
+    "avg_scored": 1.4,
+    "avg_conceded": 2.4
+  },
+  "Fiji": {
+    "elo": 1441.1,
+    "form": 0.1,
+    "gd": -2.0,
+    "avg_scored": 0.9,
+    "avg_conceded": 2.9
+  },
+  "Pakistan": {
+    "elo": 1082.1219,
+    "form": 0.0,
+    "gd": -2.9,
+    "avg_scored": 0.2,
+    "avg_conceded": 3.1
+  },
+  "Sri Lanka": {
+    "elo": 1115.5293,
+    "form": 0.4,
+    "gd": -0.6,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.5
+  },
+  "German DR": {
+    "elo": 1699.6639,
+    "form": 0.7,
+    "gd": 0.6,
+    "avg_scored": 1.9,
+    "avg_conceded": 1.3
+  },
+  "Tahiti": {
+    "elo": 1506.5009,
+    "form": 0.5,
+    "gd": -0.2,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.4
+  },
+  "Gambia": {
+    "elo": 1499.3276,
+    "form": 0.4,
+    "gd": 0.8,
+    "avg_scored": 2.4,
+    "avg_conceded": 1.6
+  },
+  "Hong Kong": {
+    "elo": 1367.1114,
+    "form": 0.4,
+    "gd": 1.0,
+    "avg_scored": 1.9,
+    "avg_conceded": 0.9
+  },
+  "Singapore": {
+    "elo": 1356.956,
+    "form": 0.4,
+    "gd": 0.2,
+    "avg_scored": 1.4,
+    "avg_conceded": 1.2
+  },
+  "Malaysia": {
+    "elo": 1531.6629,
+    "form": 0.7,
+    "gd": 1.3,
+    "avg_scored": 1.9,
+    "avg_conceded": 0.6
+  },
+  "Guinea-Bissau": {
+    "elo": 1371.2889,
+    "form": 0.1,
+    "gd": -1.1,
+    "avg_scored": 0.6,
+    "avg_conceded": 1.7
+  },
+  "Saarland": {
+    "elo": 1449.7347,
+    "form": 0.1111,
+    "gd": -1.7778,
+    "avg_scored": 1.1111,
+    "avg_conceded": 2.8889
+  },
+  "Burundi": {
+    "elo": 1399.7568,
+    "form": 0.2,
+    "gd": -0.3,
+    "avg_scored": 0.6,
+    "avg_conceded": 0.9
+  },
+  "Cameroon": {
+    "elo": 1664.174,
+    "form": 0.5,
+    "gd": 0.3,
+    "avg_scored": 1.0,
+    "avg_conceded": 0.7
+  },
+  "Kernow": {
+    "elo": 1604.7442,
+    "form": 0.7,
+    "gd": 1.8,
+    "avg_scored": 2.7,
+    "avg_conceded": 0.9
+  },
+  "Cambodia": {
+    "elo": 1137.849,
+    "form": 0.2,
+    "gd": -0.6,
+    "avg_scored": 1.4,
+    "avg_conceded": 2.0
+  },
+  "Thailand": {
+    "elo": 1548.0919,
+    "form": 0.8,
+    "gd": 1.7,
+    "avg_scored": 2.4,
+    "avg_conceded": 0.7
+  },
+  "Vietnam Republic": {
+    "elo": 1416.2699,
+    "form": 0.2,
+    "gd": -1.0,
+    "avg_scored": 1.0,
+    "avg_conceded": 2.0
+  },
+  "Kyrgyzstan": {
+    "elo": 1447.7551,
+    "form": 0.2,
+    "gd": -0.8,
+    "avg_scored": 1.2,
+    "avg_conceded": 2.0
+  },
+  "Moldova": {
+    "elo": 1360.129,
+    "form": 0.0,
+    "gd": -2.7,
+    "avg_scored": 0.6,
+    "avg_conceded": 3.3
+  },
+  "North Vietnam": {
+    "elo": 1463.0102,
+    "form": 0.4,
+    "gd": 1.0,
+    "avg_scored": 2.5,
+    "avg_conceded": 1.5
+  },
+  "Togo": {
+    "elo": 1475.1474,
+    "form": 0.3,
+    "gd": -0.1,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.0
+  },
+  "North Korea": {
+    "elo": 1486.4213,
+    "form": 0.0,
+    "gd": -1.1,
+    "avg_scored": 1.0,
+    "avg_conceded": 2.1
+  },
+  "Sudan": {
+    "elo": 1450.425,
+    "form": 0.2,
+    "gd": -1.2,
+    "avg_scored": 0.5,
+    "avg_conceded": 1.7
+  },
+  "Malta": {
+    "elo": 1409.2246,
+    "form": 0.2,
+    "gd": -1.6,
+    "avg_scored": 0.8,
+    "avg_conceded": 2.4
+  },
+  "Tunisia": {
+    "elo": 1701.9776,
+    "form": 0.3,
+    "gd": 0.4,
+    "avg_scored": 1.4,
+    "avg_conceded": 1.0
+  },
+  "Libya": {
+    "elo": 1528.3976,
+    "form": 0.3,
+    "gd": 0.2,
+    "avg_scored": 1.1,
+    "avg_conceded": 0.9
+  },
+  "Malawi": {
+    "elo": 1427.75,
+    "form": 0.4,
+    "gd": 0.3,
+    "avg_scored": 1.1,
+    "avg_conceded": 0.8
+  },
+  "Morocco": {
+    "elo": 1914.1306,
+    "form": 0.7,
+    "gd": 1.3,
+    "avg_scored": 1.8,
+    "avg_conceded": 0.5
+  },
+  "Benin": {
+    "elo": 1523.8317,
+    "form": 0.5,
+    "gd": -0.5,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.4
+  },
+  "Cape Verde": {
+    "elo": 1621.6375,
+    "form": 0.4,
+    "gd": 0.7,
+    "avg_scored": 1.7,
+    "avg_conceded": 1.0
+  },
+  "Ivory Coast": {
+    "elo": 1745.5439,
+    "form": 0.7,
+    "gd": 1.3,
+    "avg_scored": 2.0,
+    "avg_conceded": 0.7
+  },
+  "Burkina Faso": {
+    "elo": 1626.2868,
+    "form": 0.7,
+    "gd": 1.1,
+    "avg_scored": 2.0,
+    "avg_conceded": 0.9
+  },
+  "Gabon": {
+    "elo": 1516.6055,
+    "form": 0.3,
+    "gd": -0.1,
+    "avg_scored": 1.8,
+    "avg_conceded": 1.9
+  },
+  "Congo": {
+    "elo": 1353.0276,
+    "form": 0.1,
+    "gd": -1.7,
+    "avg_scored": 0.6,
+    "avg_conceded": 2.3
+  },
+  "Mali": {
+    "elo": 1657.224,
+    "form": 0.3,
+    "gd": 0.4,
+    "avg_scored": 1.2,
+    "avg_conceded": 0.8
+  },
+  "Central African Republic": {
+    "elo": 1372.4143,
+    "form": 0.2,
+    "gd": -1.6,
+    "avg_scored": 0.6,
+    "avg_conceded": 2.2
+  },
+  "Iraq": {
+    "elo": 1703.6135,
+    "form": 0.6,
+    "gd": 0.4,
+    "avg_scored": 1.1,
+    "avg_conceded": 0.7
+  },
+  "Saint Vincent and the Grenadines": {
+    "elo": 1383.3839,
+    "form": 0.6,
+    "gd": 1.5,
+    "avg_scored": 2.6,
+    "avg_conceded": 1.1
+  },
+  "Senegal": {
+    "elo": 1845.0154,
+    "form": 0.8,
+    "gd": 1.9,
+    "avg_scored": 2.5,
+    "avg_conceded": 0.6
+  },
+  "Laos": {
+    "elo": 1068.354,
+    "form": 0.1,
+    "gd": -1.8,
+    "avg_scored": 1.1,
+    "avg_conceded": 2.9
+  },
+  "Chad": {
+    "elo": 1279.0171,
+    "form": 0.0,
+    "gd": -1.3,
+    "avg_scored": 0.8,
+    "avg_conceded": 2.1
+  },
+  "Niger": {
+    "elo": 1447.0323,
+    "form": 0.4,
+    "gd": -0.2,
+    "avg_scored": 1.3,
+    "avg_conceded": 1.5
+  },
+  "Liberia": {
+    "elo": 1391.3464,
+    "form": 0.2,
+    "gd": -0.8,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.9
+  },
+  "Mauritania": {
+    "elo": 1444.7963,
+    "form": 0.1,
+    "gd": -0.7,
+    "avg_scored": 0.5,
+    "avg_conceded": 1.2
+  },
+  "Guinea": {
+    "elo": 1525.0769,
+    "form": 0.3,
+    "gd": 0.4,
+    "avg_scored": 1.2,
+    "avg_conceded": 0.8
+  },
+  "Algeria": {
+    "elo": 1804.4422,
+    "form": 0.7,
+    "gd": 1.8,
+    "avg_scored": 2.3,
+    "avg_conceded": 0.5
+  },
+  "Kuwait": {
+    "elo": 1491.6171,
+    "form": 0.2,
+    "gd": -0.9,
+    "avg_scored": 1.3,
+    "avg_conceded": 2.2
+  },
+  "Jordan": {
+    "elo": 1696.678,
+    "form": 0.5,
+    "gd": 0.5,
+    "avg_scored": 2.0,
+    "avg_conceded": 1.5
+  },
+  "Papua New Guinea": {
+    "elo": 1467.4719,
+    "form": 0.5,
+    "gd": 0.3,
+    "avg_scored": 1.8,
+    "avg_conceded": 1.5
+  },
+  "Solomon Islands": {
+    "elo": 1387.5286,
+    "form": 0.2,
+    "gd": -1.3,
+    "avg_scored": 1.6,
+    "avg_conceded": 2.9
+  },
+  "Somalia": {
+    "elo": 1121.5477,
+    "form": 0.1,
+    "gd": -1.3,
+    "avg_scored": 0.4,
+    "avg_conceded": 1.7
+  },
+  "Saudi Arabia": {
+    "elo": 1657.9839,
+    "form": 0.4,
+    "gd": -0.4,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.3
+  },
+  "Bermuda": {
+    "elo": 1351.7692,
+    "form": 0.2,
+    "gd": -1.7,
+    "avg_scored": 1.1,
+    "avg_conceded": 2.8
+  },
+  "Palestine": {
+    "elo": 1531.9379,
+    "form": 0.3,
+    "gd": 0.0,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.0
+  },
+  "Yemen": {
+    "elo": 1314.5401,
+    "form": 0.5,
+    "gd": 1.8,
+    "avg_scored": 2.8,
+    "avg_conceded": 1.0
+  },
+  "Bahrain": {
+    "elo": 1527.2294,
+    "form": 0.2,
+    "gd": -0.8,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.7
+  },
+  "Oman": {
+    "elo": 1601.9598,
+    "form": 0.2,
+    "gd": -0.4,
+    "avg_scored": 0.7,
+    "avg_conceded": 1.1
+  },
+  "Wallis Islands and Futuna": {
+    "elo": 1346.1381,
+    "form": 0.1,
+    "gd": -5.1,
+    "avg_scored": 0.7,
+    "avg_conceded": 5.8
+  },
+  "Corsica": {
+    "elo": 1577.4793,
+    "form": 0.4444,
+    "gd": 0.5556,
+    "avg_scored": 1.1111,
+    "avg_conceded": 0.5556
+  },
+  "Western Australia": {
+    "elo": 1409.8542,
+    "form": 0.3,
+    "gd": -0.3,
+    "avg_scored": 1.4,
+    "avg_conceded": 1.7
+  },
+  "Eswatini": {
+    "elo": 1325.5885,
+    "form": 0.0,
+    "gd": -1.7,
+    "avg_scored": 0.7,
+    "avg_conceded": 2.4
+  },
+  "Botswana": {
+    "elo": 1423.519,
+    "form": 0.2,
+    "gd": -1.2,
+    "avg_scored": 0.6,
+    "avg_conceded": 1.8
+  },
+  "Qatar": {
+    "elo": 1592.5029,
+    "form": 0.1,
+    "gd": -1.0,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.9
+  },
+  "Lesotho": {
+    "elo": 1383.0661,
+    "form": 0.3,
+    "gd": -1.1,
+    "avg_scored": 0.7,
+    "avg_conceded": 1.8
+  },
+  "Bahamas": {
+    "elo": 1104.4989,
+    "form": 0.1,
+    "gd": -2.7,
+    "avg_scored": 1.2,
+    "avg_conceded": 3.9
+  },
+  "Brunei": {
+    "elo": 1037.0539,
+    "form": 0.2,
+    "gd": -2.0,
+    "avg_scored": 0.4,
+    "avg_conceded": 2.4
+  },
+  "Cook Islands": {
+    "elo": 1254.194,
+    "form": 0.2,
+    "gd": -2.8,
+    "avg_scored": 0.5,
+    "avg_conceded": 3.3
+  },
+  "Yemen DPR": {
+    "elo": 1401.2659,
+    "form": 0.1,
+    "gd": -1.4,
+    "avg_scored": 1.0,
+    "avg_conceded": 2.4
+  },
+  "United Arab Emirates": {
+    "elo": 1639.0802,
+    "form": 0.3,
+    "gd": -0.2,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.4
+  },
+  "Faroe Islands": {
+    "elo": 1437.1107,
+    "form": 0.6,
+    "gd": 0.4,
+    "avg_scored": 1.3,
+    "avg_conceded": 0.9
+  },
+  "Nepal": {
+    "elo": 1192.5477,
+    "form": 0.2,
+    "gd": -0.4,
+    "avg_scored": 0.7,
+    "avg_conceded": 1.1
+  },
+  "Antigua and Barbuda": {
+    "elo": 1222.2539,
+    "form": 0.0,
+    "gd": -1.9,
+    "avg_scored": 0.3,
+    "avg_conceded": 2.2
+  },
+  "Bangladesh": {
+    "elo": 1210.6408,
+    "form": 0.3,
+    "gd": -0.1,
+    "avg_scored": 1.2,
+    "avg_conceded": 1.3
+  },
+  "Seychelles": {
+    "elo": 1082.6631,
+    "form": 0.0,
+    "gd": -5.1,
+    "avg_scored": 0.2,
+    "avg_conceded": 5.3
+  },
+  "Equatorial Guinea": {
+    "elo": 1459.1699,
+    "form": 0.2,
+    "gd": -0.8,
+    "avg_scored": 0.8,
+    "avg_conceded": 1.6
+  },
+  "Mozambique": {
+    "elo": 1480.6238,
+    "form": 0.3,
+    "gd": -0.8,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.8
+  },
+  "Guam": {
+    "elo": 1105.1184,
+    "form": 0.2,
+    "gd": -0.7,
+    "avg_scored": 1.3,
+    "avg_conceded": 2.0
+  },
+  "Angola": {
+    "elo": 1555.8462,
+    "form": 0.2,
+    "gd": -0.2,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.3
+  },
+  "S\u00e3o Tom\u00e9 and Pr\u00edncipe": {
+    "elo": 1215.6644,
+    "form": 0.1,
+    "gd": -1.5,
+    "avg_scored": 0.6,
+    "avg_conceded": 2.1
+  },
+  "Rwanda": {
+    "elo": 1467.412,
+    "form": 0.3,
+    "gd": -0.4,
+    "avg_scored": 0.8,
+    "avg_conceded": 1.2
+  },
+  "Northern Cyprus": {
+    "elo": 1632.5218,
+    "form": 0.5,
+    "gd": 2.0,
+    "avg_scored": 2.8,
+    "avg_conceded": 0.8
+  },
+  "Armenia": {
+    "elo": 1453.2404,
+    "form": 0.1,
+    "gd": -2.5,
+    "avg_scored": 0.9,
+    "avg_conceded": 3.4
+  },
+  "Georgia": {
+    "elo": 1661.9252,
+    "form": 0.3,
+    "gd": -0.5,
+    "avg_scored": 1.3,
+    "avg_conceded": 1.8
+  },
+  "Azerbaijan": {
+    "elo": 1444.1178,
+    "form": 0.1,
+    "gd": -0.9,
+    "avg_scored": 1.1,
+    "avg_conceded": 2.0
+  },
+  "Kazakhstan": {
+    "elo": 1495.9773,
+    "form": 0.3,
+    "gd": -0.5,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.5
+  },
+  "Comoros": {
+    "elo": 1459.5597,
+    "form": 0.1,
+    "gd": -0.4,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.5
+  },
+  "Maldives": {
+    "elo": 1127.2871,
+    "form": 0.1,
+    "gd": -1.4,
+    "avg_scored": 0.7,
+    "avg_conceded": 2.1
+  },
+  "Tonga": {
+    "elo": 1189.179,
+    "form": 0.2,
+    "gd": -3.3,
+    "avg_scored": 1.2,
+    "avg_conceded": 4.5
+  },
+  "Kiribati": {
+    "elo": 1360.9314,
+    "form": 0.0,
+    "gd": -9.5,
+    "avg_scored": 0.7,
+    "avg_conceded": 10.2
+  },
+  "Tuvalu": {
+    "elo": 1304.8681,
+    "form": 0.2,
+    "gd": -4.3,
+    "avg_scored": 1.3,
+    "avg_conceded": 5.6
+  },
+  "Samoa": {
+    "elo": 1315.9694,
+    "form": 0.4,
+    "gd": -1.8,
+    "avg_scored": 1.2,
+    "avg_conceded": 3.0
+  },
+  "Greenland": {
+    "elo": 1447.8872,
+    "form": 0.4,
+    "gd": -0.8,
+    "avg_scored": 1.4,
+    "avg_conceded": 2.2
+  },
+  "Liechtenstein": {
+    "elo": 1121.7795,
+    "form": 0.1,
+    "gd": -3.3,
+    "avg_scored": 0.3,
+    "avg_conceded": 3.6
+  },
+  "Bhutan": {
+    "elo": 976.2019,
+    "form": 0.1,
+    "gd": -2.3,
+    "avg_scored": 0.3,
+    "avg_conceded": 2.6
+  },
+  "South Yemen": {
+    "elo": 1473.489,
+    "form": 0.0,
+    "gd": -2.3333,
+    "avg_scored": 0.3333,
+    "avg_conceded": 2.6667
+  },
+  "Niue": {
+    "elo": 1475.0663,
+    "form": 0.0,
+    "gd": -16.5,
+    "avg_scored": 0.0,
+    "avg_conceded": 16.5
+  },
+  "American Samoa": {
+    "elo": 1109.1305,
+    "form": 0.0,
+    "gd": -6.0,
+    "avg_scored": 0.6,
+    "avg_conceded": 6.6
+  },
+  "Belize": {
+    "elo": 1322.6148,
+    "form": 0.3,
+    "gd": -1.2,
+    "avg_scored": 1.5,
+    "avg_conceded": 2.7
+  },
+  "Cayman Islands": {
+    "elo": 1193.5331,
+    "form": 0.3,
+    "gd": -0.8,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.7
+  },
+  "Anguilla": {
+    "elo": 1048.5358,
+    "form": 0.2,
+    "gd": -2.0,
+    "avg_scored": 0.8,
+    "avg_conceded": 2.8
+  },
+  "British Virgin Islands": {
+    "elo": 1127.9052,
+    "form": 0.3,
+    "gd": 0.1,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.5
+  },
+  "Palau": {
+    "elo": 1455.8119,
+    "form": 0.0,
+    "gd": -8.5,
+    "avg_scored": 2.0,
+    "avg_conceded": 10.5
+  },
+  "Sint Maarten": {
+    "elo": 1336.2289,
+    "form": 0.5,
+    "gd": -0.9,
+    "avg_scored": 1.3,
+    "avg_conceded": 2.2
+  },
+  "Namibia": {
+    "elo": 1406.5463,
+    "form": 0.2,
+    "gd": -0.9,
+    "avg_scored": 0.7,
+    "avg_conceded": 1.6
+  },
+  "Shetland": {
+    "elo": 1479.648,
+    "form": 0.3,
+    "gd": -0.2,
+    "avg_scored": 1.8,
+    "avg_conceded": 2.0
+  },
+  "Ynys M\u00f4n": {
+    "elo": 1655.4109,
+    "form": 0.9,
+    "gd": 1.1,
+    "avg_scored": 2.1,
+    "avg_conceded": 1.0
+  },
+  "\u00c5land Islands": {
+    "elo": 1483.9407,
+    "form": 0.2,
+    "gd": -0.6,
+    "avg_scored": 0.8,
+    "avg_conceded": 1.4
+  },
+  "Saint Martin": {
+    "elo": 1295.4595,
+    "form": 0.5,
+    "gd": 0.0,
+    "avg_scored": 1.7,
+    "avg_conceded": 1.7
+  },
+  "San Marino": {
+    "elo": 1027.8991,
+    "form": 0.0,
+    "gd": -3.5,
+    "avg_scored": 0.3,
+    "avg_conceded": 3.8
+  },
+  "Montserrat": {
+    "elo": 1290.0357,
+    "form": 0.2,
+    "gd": -1.4,
+    "avg_scored": 0.6,
+    "avg_conceded": 2.0
+  },
+  "Slovenia": {
+    "elo": 1737.6667,
+    "form": 0.3,
+    "gd": -0.3,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.2
+  },
+  "Isle of Wight": {
+    "elo": 1624.828,
+    "form": 0.7,
+    "gd": 1.0,
+    "avg_scored": 1.9,
+    "avg_conceded": 0.9
+  },
+  "Turkmenistan": {
+    "elo": 1394.9696,
+    "form": 0.5,
+    "gd": 0.2,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.4
+  },
+  "Tajikistan": {
+    "elo": 1438.8071,
+    "form": 0.7,
+    "gd": 1.0,
+    "avg_scored": 2.2,
+    "avg_conceded": 1.2
+  },
+  "Uzbekistan": {
+    "elo": 1775.6852,
+    "form": 0.4,
+    "gd": 0.8,
+    "avg_scored": 1.5,
+    "avg_conceded": 0.7
+  },
+  "Eritrea": {
+    "elo": 1245.3545,
+    "form": 0.0,
+    "gd": -1.7,
+    "avg_scored": 0.4,
+    "avg_conceded": 2.1
+  },
+  "Gibraltar": {
+    "elo": 1214.9391,
+    "form": 0.0,
+    "gd": -2.8,
+    "avg_scored": 0.3,
+    "avg_conceded": 3.1
+  },
+  "Isle of Man": {
+    "elo": 1648.4997,
+    "form": 0.7,
+    "gd": 2.3,
+    "avg_scored": 3.5,
+    "avg_conceded": 1.2
+  },
+  "North Macedonia": {
+    "elo": 1610.7496,
+    "form": 0.2,
+    "gd": -0.5,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.5
+  },
+  "Czech Republic": {
+    "elo": 1753.755,
+    "form": 0.4,
+    "gd": 0.6,
+    "avg_scored": 1.8,
+    "avg_conceded": 1.2
+  },
+  "Bosnia and Herzegovina": {
+    "elo": 1630.37,
+    "form": 0.4,
+    "gd": 1.0,
+    "avg_scored": 2.1,
+    "avg_conceded": 1.1
+  },
+  "Canary Islands": {
+    "elo": 1522.5777,
+    "form": 0.75,
+    "gd": 2.0,
+    "avg_scored": 2.75,
+    "avg_conceded": 0.75
+  },
+  "Andorra": {
+    "elo": 1202.7051,
+    "form": 0.0,
+    "gd": -1.5,
+    "avg_scored": 0.3,
+    "avg_conceded": 1.8
+  },
+  "Fr\u00f8ya": {
+    "elo": 1270.7048,
+    "form": 0.1,
+    "gd": -2.6,
+    "avg_scored": 1.3,
+    "avg_conceded": 3.9
+  },
+  "Hitra": {
+    "elo": 1384.089,
+    "form": 0.4,
+    "gd": -0.6,
+    "avg_scored": 2.3,
+    "avg_conceded": 2.9
+  },
+  "United States Virgin Islands": {
+    "elo": 1113.0675,
+    "form": 0.2,
+    "gd": -0.5,
+    "avg_scored": 1.5,
+    "avg_conceded": 2.0
+  },
+  "Northern Mariana Islands": {
+    "elo": 1140.3077,
+    "form": 0.2,
+    "gd": -3.4,
+    "avg_scored": 1.0,
+    "avg_conceded": 4.4
+  },
+  "Turks and Caicos Islands": {
+    "elo": 1190.7068,
+    "form": 0.2,
+    "gd": -0.9,
+    "avg_scored": 0.9,
+    "avg_conceded": 1.8
+  },
+  "Micronesia": {
+    "elo": 1412.6252,
+    "form": 0.1429,
+    "gd": -7.2857,
+    "avg_scored": 1.1429,
+    "avg_conceded": 8.4286
+  },
+  "Saare County": {
+    "elo": 1359.7388,
+    "form": 0.3,
+    "gd": -0.5,
+    "avg_scored": 1.6,
+    "avg_conceded": 2.1
+  },
+  "Rhodes": {
+    "elo": 1576.3352,
+    "form": 0.7,
+    "gd": 0.8,
+    "avg_scored": 1.7,
+    "avg_conceded": 0.9
+  },
+  "Gotland": {
+    "elo": 1434.0055,
+    "form": 0.3,
+    "gd": 1.0,
+    "avg_scored": 2.9,
+    "avg_conceded": 1.9
+  },
+  "Monaco": {
+    "elo": 1463.144,
+    "form": 0.3,
+    "gd": -1.6,
+    "avg_scored": 1.3,
+    "avg_conceded": 2.9
+  },
+  "Tibet": {
+    "elo": 1326.174,
+    "form": 0.0,
+    "gd": -3.2,
+    "avg_scored": 1.2,
+    "avg_conceded": 4.4
+  },
+  "Orkney": {
+    "elo": 1429.498,
+    "form": 0.5,
+    "gd": 0.1,
+    "avg_scored": 1.9,
+    "avg_conceded": 1.8
+  },
+  "Falkland Islands": {
+    "elo": 1290.6752,
+    "form": 0.0,
+    "gd": -2.6,
+    "avg_scored": 0.7,
+    "avg_conceded": 3.3
+  },
+  "Mayotte": {
+    "elo": 1430.3607,
+    "form": 0.5,
+    "gd": 0.4,
+    "avg_scored": 1.2,
+    "avg_conceded": 0.8
+  },
+  "Vatican City": {
+    "elo": 1427.5378,
+    "form": 0.0,
+    "gd": -1.8571,
+    "avg_scored": 0.5714,
+    "avg_conceded": 2.4286
+  },
+  "Timor-Leste": {
+    "elo": 992.3976,
+    "form": 0.1,
+    "gd": -2.9,
+    "avg_scored": 0.6,
+    "avg_conceded": 3.5
+  },
+  "Sark": {
+    "elo": 1437.6173,
+    "form": 0.0,
+    "gd": -17.5,
+    "avg_scored": 0.0,
+    "avg_conceded": 17.5
+  },
+  "Sealand": {
+    "elo": 1494.2657,
+    "form": 0.4,
+    "gd": -0.1,
+    "avg_scored": 2.4,
+    "avg_conceded": 2.5
+  },
+  "Occitania": {
+    "elo": 1635.9116,
+    "form": 0.7,
+    "gd": 2.7,
+    "avg_scored": 3.3,
+    "avg_conceded": 0.6
+  },
+  "Chechnya": {
+    "elo": 1469.5634,
+    "form": 0.0,
+    "gd": -8.6667,
+    "avg_scored": 1.0,
+    "avg_conceded": 9.6667
+  },
+  "Ambazonia": {
+    "elo": 1425.0142,
+    "form": 0.0,
+    "gd": -2.3333,
+    "avg_scored": 0.5,
+    "avg_conceded": 2.8333
+  },
+  "Western Isles": {
+    "elo": 1450.2681,
+    "form": 0.3,
+    "gd": -0.8,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.9
+  },
+  "Kosovo": {
+    "elo": 1712.1109,
+    "form": 0.6,
+    "gd": 0.6,
+    "avg_scored": 1.9,
+    "avg_conceded": 1.3
+  },
+  "Republic of St. Pauli": {
+    "elo": 1478.8135,
+    "form": 0.25,
+    "gd": 1.25,
+    "avg_scored": 2.5,
+    "avg_conceded": 1.25
+  },
+  "Crimea": {
+    "elo": 1507.2827,
+    "form": 0.6,
+    "gd": -0.8,
+    "avg_scored": 1.4,
+    "avg_conceded": 2.2
+  },
+  "G\u0103g\u0103uzia": {
+    "elo": 1453.5676,
+    "form": 0.0,
+    "gd": -2.3333,
+    "avg_scored": 0.6667,
+    "avg_conceded": 3.0
+  },
+  "S\u00e1pmi": {
+    "elo": 1459.5067,
+    "form": 0.3,
+    "gd": -0.9,
+    "avg_scored": 1.1,
+    "avg_conceded": 2.0
+  },
+  "Romani people": {
+    "elo": 1467.0566,
+    "form": 0.2857,
+    "gd": -1.8571,
+    "avg_scored": 1.8571,
+    "avg_conceded": 3.7143
+  },
+  "Menorca": {
+    "elo": 1524.0121,
+    "form": 0.4,
+    "gd": 0.6,
+    "avg_scored": 1.8,
+    "avg_conceded": 1.2
+  },
+  "Iraqi Kurdistan": {
+    "elo": 1597.8838,
+    "form": 0.3,
+    "gd": 1.4,
+    "avg_scored": 2.3,
+    "avg_conceded": 0.9
+  },
+  "Padania": {
+    "elo": 1633.867,
+    "form": 0.5,
+    "gd": 1.6,
+    "avg_scored": 2.5,
+    "avg_conceded": 0.9
+  },
+  "Arameans Suryoye": {
+    "elo": 1537.4316,
+    "form": 0.5,
+    "gd": 0.4,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.2
+  },
+  "Gozo": {
+    "elo": 1477.8692,
+    "form": 0.4,
+    "gd": 1.2,
+    "avg_scored": 2.6,
+    "avg_conceded": 1.4
+  },
+  "Two Sicilies": {
+    "elo": 1442.3892,
+    "form": 0.1667,
+    "gd": -2.5,
+    "avg_scored": 0.5,
+    "avg_conceded": 3.0
+  },
+  "Saint Barth\u00e9lemy": {
+    "elo": 1417.7131,
+    "form": 0.4,
+    "gd": -0.5,
+    "avg_scored": 2.5,
+    "avg_conceded": 3.0
+  },
+  "Saint Pierre and Miquelon": {
+    "elo": 1393.0444,
+    "form": 0.0,
+    "gd": -10.8571,
+    "avg_scored": 0.2857,
+    "avg_conceded": 11.1429
+  },
+  "Bonaire": {
+    "elo": 1252.4542,
+    "form": 0.2,
+    "gd": -1.3,
+    "avg_scored": 0.9,
+    "avg_conceded": 2.2
+  },
+  "Chagos Islands": {
+    "elo": 1385.8656,
+    "form": 0.1,
+    "gd": -4.1,
+    "avg_scored": 1.5,
+    "avg_conceded": 5.6
+  },
+  "Raetia": {
+    "elo": 1412.688,
+    "form": 0.2,
+    "gd": -0.7,
+    "avg_scored": 2.5,
+    "avg_conceded": 3.2
+  },
+  "Cilento": {
+    "elo": 1485.0242,
+    "form": 0.0,
+    "gd": -2.0,
+    "avg_scored": 0.0,
+    "avg_conceded": 2.0
+  },
+  "Darfur": {
+    "elo": 1402.2036,
+    "form": 0.0,
+    "gd": -14.0,
+    "avg_scored": 0.1429,
+    "avg_conceded": 14.1429
+  },
+  "Western Sahara": {
+    "elo": 1489.7628,
+    "form": 0.4,
+    "gd": -1.0,
+    "avg_scored": 2.2,
+    "avg_conceded": 3.2
+  },
+  "Tamil Eelam": {
+    "elo": 1500.7399,
+    "form": 0.5,
+    "gd": -0.6,
+    "avg_scored": 1.8,
+    "avg_conceded": 2.4
+  },
+  "South Sudan": {
+    "elo": 1295.5442,
+    "form": 0.1,
+    "gd": -1.4,
+    "avg_scored": 0.6,
+    "avg_conceded": 2.0
+  },
+  "Abkhazia": {
+    "elo": 1595.0089,
+    "form": 0.5,
+    "gd": 1.1,
+    "avg_scored": 1.8,
+    "avg_conceded": 0.7
+  },
+  "Artsakh": {
+    "elo": 1550.4097,
+    "form": 0.6,
+    "gd": 1.8,
+    "avg_scored": 3.1,
+    "avg_conceded": 1.3
+  },
+  "Madrid": {
+    "elo": 1489.3158,
+    "form": 0.0,
+    "gd": -1.0,
+    "avg_scored": 1.0,
+    "avg_conceded": 2.0
+  },
+  "Saugeais": {
+    "elo": 1497.8857,
+    "form": 0.0,
+    "gd": 0.0,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.0
+  },
+  "Ellan Vannin": {
+    "elo": 1556.2232,
+    "form": 0.4,
+    "gd": 0.2,
+    "avg_scored": 1.6,
+    "avg_conceded": 1.4
+  },
+  "Somaliland": {
+    "elo": 1482.9488,
+    "form": 0.3333,
+    "gd": -1.0,
+    "avg_scored": 2.3333,
+    "avg_conceded": 3.3333
+  },
+  "Franconia": {
+    "elo": 1503.9457,
+    "form": 0.6667,
+    "gd": -1.0,
+    "avg_scored": 2.6667,
+    "avg_conceded": 3.6667
+  },
+  "County of Nice": {
+    "elo": 1574.3676,
+    "form": 0.6667,
+    "gd": 0.6667,
+    "avg_scored": 2.1111,
+    "avg_conceded": 1.4444
+  },
+  "South Ossetia": {
+    "elo": 1487.4997,
+    "form": 0.4,
+    "gd": -0.9,
+    "avg_scored": 1.3,
+    "avg_conceded": 2.2
+  },
+  "Seborga": {
+    "elo": 1482.9524,
+    "form": 0.0,
+    "gd": -1.0,
+    "avg_scored": 2.0,
+    "avg_conceded": 3.0
+  },
+  "Sz\u00e9kely Land": {
+    "elo": 1474.4385,
+    "form": 0.3,
+    "gd": -0.1,
+    "avg_scored": 2.1,
+    "avg_conceded": 2.2
+  },
+  "Luhansk PR": {
+    "elo": 1484.9692,
+    "form": 0.3333,
+    "gd": -0.5,
+    "avg_scored": 1.5,
+    "avg_conceded": 2.0
+  },
+  "Donetsk PR": {
+    "elo": 1507.8683,
+    "form": 0.3333,
+    "gd": 0.1667,
+    "avg_scored": 1.3333,
+    "avg_conceded": 1.1667
+  },
+  "Panjab": {
+    "elo": 1531.8983,
+    "form": 0.4,
+    "gd": 1.6,
+    "avg_scored": 3.0,
+    "avg_conceded": 1.4
+  },
+  "Felvid\u00e9k": {
+    "elo": 1507.4953,
+    "form": 0.4,
+    "gd": -0.5,
+    "avg_scored": 1.1,
+    "avg_conceded": 1.6
+  },
+  "United Koreans in Japan": {
+    "elo": 1495.8269,
+    "form": 0.2,
+    "gd": 1.1,
+    "avg_scored": 1.9,
+    "avg_conceded": 0.8
+  },
+  "Western Armenia": {
+    "elo": 1485.1818,
+    "form": 0.4,
+    "gd": 0.7,
+    "avg_scored": 2.0,
+    "avg_conceded": 1.3
+  },
+  "K\u00e1rp\u00e1talja": {
+    "elo": 1570.1774,
+    "form": 0.5,
+    "gd": 1.2,
+    "avg_scored": 2.4,
+    "avg_conceded": 1.2
+  },
+  "D\u00e9lvid\u00e9k": {
+    "elo": 1496.1183,
+    "form": 0.5,
+    "gd": 0.5,
+    "avg_scored": 2.0,
+    "avg_conceded": 1.5
+  },
+  "Barawa": {
+    "elo": 1428.3913,
+    "form": 0.3,
+    "gd": -2.4,
+    "avg_scored": 1.4,
+    "avg_conceded": 3.8
+  },
+  "Ry\u016bky\u016b": {
+    "elo": 1483.6327,
+    "form": 0.0,
+    "gd": -9.0,
+    "avg_scored": 0.0,
+    "avg_conceded": 9.0
+  },
+  "Yorkshire": {
+    "elo": 1558.7079,
+    "form": 0.7143,
+    "gd": 2.2857,
+    "avg_scored": 3.8571,
+    "avg_conceded": 1.5714
+  },
+  "Surrey": {
+    "elo": 1514.4141,
+    "form": 1.0,
+    "gd": 2.0,
+    "avg_scored": 3.0,
+    "avg_conceded": 1.0
+  },
+  "Matabeleland": {
+    "elo": 1499.7624,
+    "form": 0.375,
+    "gd": -0.875,
+    "avg_scored": 0.875,
+    "avg_conceded": 1.75
+  },
+  "Kabylia": {
+    "elo": 1470.6059,
+    "form": 0.1667,
+    "gd": -1.1667,
+    "avg_scored": 1.3333,
+    "avg_conceded": 2.5
+  },
+  "Cascadia": {
+    "elo": 1530.2049,
+    "form": 0.5714,
+    "gd": 1.2857,
+    "avg_scored": 3.2857,
+    "avg_conceded": 2.0
+  },
+  "Parishes of Jersey": {
+    "elo": 1514.3313,
+    "form": 0.6667,
+    "gd": 2.3333,
+    "avg_scored": 3.6667,
+    "avg_conceded": 1.3333
+  },
+  "Chameria": {
+    "elo": 1516.61,
+    "form": 0.4286,
+    "gd": 0.8571,
+    "avg_scored": 2.0,
+    "avg_conceded": 1.1429
+  },
+  "Saint Helena": {
+    "elo": 1391.9805,
+    "form": 0.0,
+    "gd": -4.375,
+    "avg_scored": 0.75,
+    "avg_conceded": 5.125
+  },
+  "Yoruba Nation": {
+    "elo": 1483.2882,
+    "form": 0.0,
+    "gd": -0.5,
+    "avg_scored": 0.5,
+    "avg_conceded": 1.0
+  },
+  "Biafra": {
+    "elo": 1517.4836,
+    "form": 0.6667,
+    "gd": 0.3333,
+    "avg_scored": 0.6667,
+    "avg_conceded": 0.3333
+  },
+  "Mapuche": {
+    "elo": 1500.7363,
+    "form": 0.5,
+    "gd": 0.5,
+    "avg_scored": 1.5,
+    "avg_conceded": 1.0
+  },
+  "Maule Sur": {
+    "elo": 1530.4969,
+    "form": 1.0,
+    "gd": 1.0,
+    "avg_scored": 1.0,
+    "avg_conceded": 0.0
+  },
+  "Aymara": {
+    "elo": 1468.7668,
+    "form": 0.0,
+    "gd": -1.5,
+    "avg_scored": 0.5,
+    "avg_conceded": 2.0
+  },
+  "Elba Island": {
+    "elo": 1510.5511,
+    "form": 1.0,
+    "gd": 5.0,
+    "avg_scored": 5.0,
+    "avg_conceded": 0.0
+  },
+  "West Papua": {
+    "elo": 1494.0876,
+    "form": 0.0,
+    "gd": 0.0,
+    "avg_scored": 1.0,
+    "avg_conceded": 1.0
+  },
+  "Ticino": {
+    "elo": 1458.4646,
+    "form": 0.0,
+    "gd": -5.5,
+    "avg_scored": 1.0,
+    "avg_conceded": 6.5
+  },
+  "Hmong": {
+    "elo": 1475.6966,
+    "form": 0.3333,
+    "gd": -1.3333,
+    "avg_scored": 2.0,
+    "avg_conceded": 3.3333
+  },
+  "Marshall Islands": {
+    "elo": 1443.1707,
+    "form": 0.0,
+    "gd": -2.5,
+    "avg_scored": 1.0,
+    "avg_conceded": 3.5
+  }
+}
