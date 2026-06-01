@@ -758,8 +758,7 @@ function updatePicksUI() {
 async function signInWithGoogle() {
   if (!sb) return;
   sessionStorage.setItem('authRedirectPage', 'picks');
-  const base = window.location.origin + window.location.pathname;
-  await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: base } });
+  await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
 }
 async function signOut() {
   if (!sb) return;
