@@ -11,7 +11,7 @@ sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from fastapi import FastAPI, HTTPException, Header
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from pydantic import BaseModel
 import json
 import datetime
@@ -316,6 +316,48 @@ def live_update(x_api_key: str = Header(default=None)):
         _invalidate_cache()
 
     return result
+
+
+# ---------------------------------------------------------------------------
+# Privacy policy
+# ---------------------------------------------------------------------------
+
+@app.get("/privacy", response_class=HTMLResponse)
+def privacy():
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Privacy Policy — World Cup 2026 Predictor</title>
+  <style>
+    body{font-family:system-ui,sans-serif;max-width:700px;margin:60px auto;padding:0 2rem;color:#222;line-height:1.7}
+    h1{font-size:1.6rem;margin-bottom:.25rem}
+    h2{font-size:1.1rem;margin-top:2rem}
+    p,li{font-size:.95rem;color:#444}
+    a{color:#4f8ef7}
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p><strong>World Cup 2026 Predictor</strong> &mdash; Last updated: June 1, 2026</p>
+
+  <h2>What we collect</h2>
+  <p>We collect your email address and name when you sign in with Google. This is used solely to identify your account and display your username on the leaderboard.</p>
+
+  <h2>What we don't do</h2>
+  <p>We do not sell, share, or rent your personal information to any third party. We do not use your data for advertising.</p>
+
+  <h2>How your data is stored</h2>
+  <p>Your account information and score predictions are stored securely via Supabase. We do not store your Google password.</p>
+
+  <h2>Third-party services</h2>
+  <p>This app uses Google OAuth for authentication. <a href="https://policies.google.com/privacy">Google's privacy policy</a> applies to the sign-in process.</p>
+
+  <h2>Contact</h2>
+  <p>If you have any questions, contact <a href="mailto:shrenilsoni@gmail.com">shrenilsoni@gmail.com</a>.</p>
+</body>
+</html>"""
 
 
 # ---------------------------------------------------------------------------
