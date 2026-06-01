@@ -174,6 +174,7 @@ def get_matches():
     result = []
     for idx, row in wc.iterrows():
         has_result = pd.notna(row.get("home_score"))
+        round_val = str(row["round"]) if pd.notna(row.get("round")) else "group"
         result.append({
             "match_id":   f"{row['date']}_{row['home_team']}_{row['away_team']}",
             "match_index": int(idx),
@@ -185,6 +186,7 @@ def get_matches():
             "is_locked":  bool(str(row["date"]) <= tomorrow or has_result),
             "neutral":    bool(row["neutral"]),
             "city":       row.get("city", ""),
+            "round":      round_val,
         })
     return {"matches": result, "today": today}
 

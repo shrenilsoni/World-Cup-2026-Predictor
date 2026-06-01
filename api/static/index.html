@@ -401,6 +401,10 @@
     </div>
   </section>
 
+  <footer style="text-align:center;padding:1.2rem;color:var(--muted);font-size:.72rem;opacity:.5">
+    Created by Shrenil Soni
+  </footer>
+
 </div><!-- /home -->
 
 <!-- ══════════════════ PREDICT ══════════════════ -->
@@ -558,11 +562,11 @@
           <thead>
             <tr>
               <th></th>
-              <th class="col-exact">Exact Score<br><span class="example-score">Pick: 2–1</span></th>
-              <th class="col-onewin">One Team + Right Winner<br><span class="example-score">Pick: 2–0</span></th>
-              <th class="col-partial">One Team, Wrong Winner<br><span class="example-score">Pick: 2–3</span></th>
-              <th class="col-result">Right Winner Only<br><span class="example-score">Pick: 3–0</span></th>
-              <th class="col-wrong">Wrong<br><span class="example-score">Pick: 0–1</span></th>
+              <th class="col-exact">Exact Score<br><span class="example-score">Your pick: 2–1</span></th>
+              <th class="col-onewin">One Team + Right Winner<br><span class="example-score">Your pick: 2–0</span></th>
+              <th class="col-partial">One Team, Wrong Winner<br><span class="example-score">Your pick: 2–3</span></th>
+              <th class="col-result">Right Winner Only<br><span class="example-score">Your pick: 3–0</span></th>
+              <th class="col-wrong">Wrong<br><span class="example-score">Your pick: 0–1</span></th>
             </tr>
           </thead>
           <tbody>
@@ -989,15 +993,18 @@ function renderMyPicks() {
   const saved = Object.values(myPicks).filter(p => p.home_score_pick != null).length;
   document.getElementById('picks-count').textContent = `${saved}/${allMatches.length} saved`;
   document.getElementById('picks-bar').style.width = `${(saved/allMatches.length*100).toFixed(0)}%`;
+  const ROUND_LABELS = {r32:'Round of 32',r16:'Round of 16',qf:'Quarter-Final',sf:'Semi-Final','3rd':'Third Place','final':'Final'};
   const byDate = {};
   allMatches.forEach(m => { (byDate[m.date]=byDate[m.date]||[]).push(m); });
   const list = document.getElementById('picks-list');
   list.innerHTML = '';
   Object.entries(byDate).forEach(([date, matches]) => {
-    const label = new Date(date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    const dateStr = new Date(date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    const round = matches[0].round;
+    const roundLabel = (round && round !== 'group') ? `${ROUND_LABELS[round] || round.toUpperCase()} · ` : '';
     const div = document.createElement('div');
     div.className = 'picks-date-group';
-    div.innerHTML = `<div class="picks-date-label">${label}</div>` + matches.map(renderPickCard).join('');
+    div.innerHTML = `<div class="picks-date-label">${roundLabel}${dateStr}</div>` + matches.map(renderPickCard).join('');
     list.appendChild(div);
   });
 }
@@ -1051,23 +1058,26 @@ function onScoreChange(idx) {
       if (ss) { ss.className='save-status unsaved'; ss.textContent='Enter scores'; } return;
     }
     const match = allMatches.find(m => m.match_index===idx);
-    if (match) autoSavePick(idx, match.home_team, match.away_team);
+    if (match) autoSavePick(match);
   }, 800);
 }
 
-async function autoSavePick(idx, team1, team2) {
+async function autoSavePick(match) {
   if (!sb || !currentUser) return;
+  const idx = match.match_index;
+  const team1 = match.home_team, team2 = match.away_team;
+  const round = match.round || 'group';
   const ss = document.getElementById(`ss-${idx}`);
   const h = parseInt(document.getElementById(`h-${idx}`)?.value);
   const a = parseInt(document.getElementById(`a-${idx}`)?.value);
   if (isNaN(h)||isNaN(a)||h<0||a<0) { if(ss){ss.className='save-status unsaved';ss.textContent='Invalid';} return; }
   const winner = h>a?team1:h<a?team2:'draw';
   const {error} = await sb.from('bracket_picks').upsert({
-    user_id:currentUser.id, round:'group', match_index:idx,
+    user_id:currentUser.id, round, match_index:idx,
     picked_winner:winner, team1, team2, home_score_pick:h, away_score_pick:a,
   }, {onConflict:'user_id,round,match_index'});
   if (error) { if(ss){ss.className='save-status unsaved';ss.textContent='✗ Error';} return; }
-  myPicks[idx] = {...(myPicks[idx]||{}), user_id:currentUser.id, round:'group', match_index:idx,
+  myPicks[idx] = {...(myPicks[idx]||{}), user_id:currentUser.id, round, match_index:idx,
     picked_winner:winner, team1, team2, home_score_pick:h, away_score_pick:a};
   if(ss){ss.className='save-status saved';ss.textContent='✓ Saved';}
   const saved = Object.values(myPicks).filter(p => p.home_score_pick!=null).length;
@@ -1136,5 +1146,7 @@ async function triggerLiveUpdate() {
 
 init();
 </script>
+
+
 </body>
 </html>
