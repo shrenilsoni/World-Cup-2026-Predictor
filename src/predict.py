@@ -80,11 +80,12 @@ def predict_goals(home, away, neutral, goal_model_h, goal_model_a, feat_h, feat_
 
     pred_h = round(lam_h)
     pred_a = round(lam_a)
+    pred_pct = score_probs.get((pred_h, pred_a), 0)
     return {
         'home_xg':   round(lam_h, 2),
         'away_xg':   round(lam_a, 2),
         'most_likely_score': f"{pred_h}–{pred_a}",
-        'most_likely_pct':   round(most_likely_pct * 100, 1),
+        'most_likely_pct':   round(pred_pct * 100, 1),
         'top_scores': [
             {'score': f"{i}–{j}", 'pct': round(p * 100, 1)}
             for (i, j), p in top5
