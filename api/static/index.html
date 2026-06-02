@@ -114,6 +114,14 @@
     .signin-card{max-width:440px;width:100%;text-align:center}
     .signin-card h2{font-size:1.2rem;margin-bottom:.6rem}
     .signin-icon{font-size:3rem;margin-bottom:1rem;display:block}
+    /* ── Toast notification ──────────────────── */
+    .toast{position:fixed;bottom:2rem;right:2rem;background:var(--surface3);border:1px solid var(--border);border-radius:10px;padding:.75rem 1.1rem;font-size:.83rem;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.5);transition:opacity .4s,transform .4s;max-width:280px}
+    .toast.hidden{opacity:0;pointer-events:none;transform:translateY(8px)}
+    .toast.success{border-color:rgba(34,197,94,.4)}
+    .toast.error{border-color:rgba(239,68,68,.4)}
+    /* ── Knockout soon note ──────────────────── */
+    .ko-soon-note{text-align:center;color:var(--muted);font-size:.78rem;padding:1.4rem 1rem;border-top:1px solid var(--border);margin-top:.5rem;line-height:1.6}
+    .ko-soon-note strong{color:var(--text)}
     /* ── Timezone tooltip ────────────────────── */
     .tz-anchor{position:relative;display:inline-block;vertical-align:middle;cursor:default}
     .tz-info-icon{font-size:.72rem;color:var(--muted);margin-left:.2rem;opacity:.6;font-style:normal}
@@ -302,6 +310,9 @@
   </div>
 </div>
 
+<!-- ══ Toast ══ -->
+<div id="toast" class="toast hidden"></div>
+
 <!-- ══ Navbar ══ -->
 <nav class="navbar">
   <div class="nav-brand" onclick="showPage('home')">
@@ -329,7 +340,7 @@
   <section class="hero">
     <div class="hero-eyebrow">FIFA World Cup 2026 · USA · Canada · Mexico</div>
     <h1 class="hero-title">Predict Every Score.<br><span class="gradient-text">Beat the Algorithm.</span></h1>
-    <p class="hero-sub">Submit your score predictions for all 72 WC 2026 matches and compete on the leaderboard. Need a hand? I built an ML model that predicts every matchup — use it as your secret weapon.</p>
+    <p class="hero-sub">Submit your score predictions for every WC 2026 match and compete on the leaderboard. Need a hand? I built an ML model that predicts every matchup. Use it as your secret weapon.</p>
     <div class="hero-ctas">
       <button class="btn-primary" onclick="showPage('picks')">Submit My Picks</button>
       <button class="btn-primary" onclick="showPage('predict')">See AI Predictions</button>
@@ -358,7 +369,7 @@
       <div class="feature-card" onclick="showPage('picks')" style="border-color:rgba(79,142,247,.35)">
         <div class="feature-icon">⚽</div>
         <h3>Submit Your Picks</h3>
-        <p>Predict the score for every group stage match. Scores auto-save as you type. Picks lock at <strong>11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span> the night before each match — no changes once match day begins.</p>
+        <p>Predict the score for every WC 2026 match. Scores auto-save as you type. Picks lock at <strong>11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span> the night before each match — no changes once match day begins.</p>
         <span class="feature-link">Start predicting →</span>
       </div>
       <div class="feature-card" onclick="showPage('leaderboard')" style="border-color:rgba(79,142,247,.35)">
@@ -375,7 +386,7 @@
     <div class="model-inner">
       <div>
         <h2>Need a Hand? Use the AI.</h2>
-        <p>I built a custom ML model from scratch — a Random Forest classifier trained on 9,796 international matches from 2016–2026. It predicts win probabilities, runs 10,000 tournament simulations, and generates the full knockout bracket.</p>
+        <p>I built a custom ML model from scratch, a Random Forest classifier trained on 9,796 international matches from 2016 to 2024. It predicts win probabilities and generates the full knockout bracket.</p>
         <p>Use it to inform your picks. Or ignore it entirely and trust your gut. The leaderboard doesn't know either way.</p>
         <div class="model-chips">
           <span class="chip">ELO Rating</span>
@@ -383,7 +394,6 @@
           <span class="chip">Avg Goal Difference</span>
           <span class="chip">Random Forest</span>
           <span class="chip">Calibrated Probabilities</span>
-          <span class="chip">10,000 Simulations</span>
         </div>
         <div style="margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap">
           <button class="btn-ghost" style="margin:0;font-size:.85rem" onclick="showPage('predict')">Match Predictor →</button>
@@ -394,7 +404,6 @@
       <div class="model-metrics">
         <div class="metric-row"><span class="metric-label">Training data</span><span class="metric-val">9,796 matches</span></div>
         <div class="metric-row"><span class="metric-label">Training window</span><span class="metric-val">2016 – 2026</span></div>
-        <div class="metric-row"><span class="metric-label">Simulations per run</span><span class="metric-val">10,000</span></div>
         <div class="metric-row"><span class="metric-label">WC 2026 fixtures</span><span class="metric-val">72 group matches</span></div>
         <div class="metric-row"><span class="metric-label">Predicted champion</span><span class="metric-val" id="home-champion">— loading</span></div>
       </div>
@@ -469,7 +478,7 @@
   <div class="content">
     <div class="card">
       <h2>Tournament Odds</h2>
-      <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem">10,000 full tournament simulations — group stage through the final.</p>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem">Full tournament simulations from the group stage through the final.</p>
       <div id="sim-loading" class="loading hidden"><div class="spinner"></div> Loading simulations…</div>
     </div>
     <div id="sim-result" class="card hidden">
@@ -495,7 +504,7 @@
   <div class="content">
     <div class="card">
       <h2>Group Stage Predictions</h2>
-      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.2rem">Advance % = probability of finishing 1st or 2nd across 10,000 simulations.</p>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.2rem">Advance % = probability of finishing 1st or 2nd in the group stage.</p>
       <div id="bracket-loading" class="loading"><div class="spinner"></div> Loading…</div>
       <div id="groups-grid" class="groups-grid hidden"></div>
     </div>
@@ -515,7 +524,7 @@
       <div class="card signin-card">
         <span class="signin-icon">⚽</span>
         <h2>Sign in to submit picks</h2>
-        <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.5rem;line-height:1.55">Predict the score of every WC 2026 group stage match and compete on the leaderboard against everyone else.</p>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.5rem;line-height:1.55">Predict the score of every WC 2026 match and compete on the leaderboard against everyone else.</p>
         <button class="btn" onclick="signInWithGoogle()" style="margin-top:0;width:100%">Sign in with Google</button>
       </div>
     </div>
@@ -537,9 +546,9 @@
       </div>
       <div class="card">
         <h2>Group Stage Score Predictions</h2>
-        <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Predict the 90-min score. Picks auto-save as you type. Locks at <strong style="color:var(--text)">11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span> the night before each match.</p>
+        <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Predict the full-time score. For knockout matches, predict after 90 minutes. Extra time and penalties are not counted. Picks auto-save as you type. Locks at <strong style="color:var(--text)">11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span> the night before each match.</p>
         <div class="picks-progress-row">
-          <span id="picks-count" style="white-space:nowrap">0/72 saved</span>
+          <span id="picks-count" style="white-space:nowrap">0 saved</span>
           <div class="progress-bar-track"><div class="progress-bar-fill" id="picks-bar" style="width:0%"></div></div>
         </div>
         <div id="picks-loading" class="loading"><div class="spinner"></div> Loading matches…</div>
@@ -870,7 +879,7 @@ async function loadSimulate() {
   } finally { document.getElementById('sim-loading').classList.add('hidden'); }
 }
 function renderSimData() {
-  document.getElementById('sim-subtitle').textContent = '10,000 simulations';
+  document.getElementById('sim-subtitle').textContent = '';
   const tbody = document.getElementById('sim-tbody');
   tbody.innerHTML = '';
   const maxC = simData[0].champion_pct;
@@ -941,7 +950,7 @@ function renderBracket(d) {
       <div class="champ-box">
         <div class="c-label">🏆 Predicted Champion</div>
         <div class="c-name">${d.champion}</div>
-        <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem">${champPct}% in 10,000 simulations</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem">${champPct}% chance of winning</div>
       </div>
     </div>
     <div class="bracket-half right">
@@ -990,8 +999,9 @@ async function loadMyPicks() {
 
 function renderMyPicks() {
   const saved = Object.values(myPicks).filter(p => p.home_score_pick != null).length;
-  document.getElementById('picks-count').textContent = `${saved}/${allMatches.length} saved`;
-  document.getElementById('picks-bar').style.width = `${(saved/allMatches.length*100).toFixed(0)}%`;
+  const total = allMatches.length;
+  document.getElementById('picks-count').textContent = `${saved}/${total} saved`;
+  document.getElementById('picks-bar').style.width = `${(saved/total*100).toFixed(0)}%`;
   const ROUND_LABELS = {r32:'Round of 32',r16:'Round of 16',qf:'Quarter-Final',sf:'Semi-Final','3rd':'Third Place','final':'Final'};
   const byDate = {};
   allMatches.forEach(m => { (byDate[m.date]=byDate[m.date]||[]).push(m); });
@@ -1006,6 +1016,14 @@ function renderMyPicks() {
     div.innerHTML = `<div class="picks-date-label">${roundLabel}${dateStr}</div>` + matches.map(renderPickCard).join('');
     list.appendChild(div);
   });
+  // Knockout coming-soon note if no KO fixtures yet
+  const hasKO = allMatches.some(m => m.round && m.round !== 'group');
+  if (!hasKO) {
+    const note = document.createElement('div');
+    note.className = 'ko-soon-note';
+    note.innerHTML = 'Knockout stage picks open from <strong>June 28</strong> once the group stage is complete.';
+    list.appendChild(note);
+  }
 }
 
 function renderPickCard(match) {
@@ -1049,12 +1067,19 @@ const _saveTimers = {};
 function onScoreChange(idx) {
   const ss = document.getElementById(`ss-${idx}`);
   if (ss) { ss.className='save-status saving'; ss.textContent='● saving…'; }
+  // Auto-zero: if one box has a value and the other is empty, set the empty one to 0
+  const hEl = document.getElementById(`h-${idx}`);
+  const aEl = document.getElementById(`a-${idx}`);
+  if (hEl && aEl) {
+    if (hEl.value !== '' && aEl.value === '') aEl.value = '0';
+    if (aEl.value !== '' && hEl.value === '') hEl.value = '0';
+  }
   if (_saveTimers[idx]) clearTimeout(_saveTimers[idx]);
   _saveTimers[idx] = setTimeout(() => {
-    const h = document.getElementById(`h-${idx}`)?.value;
-    const a = document.getElementById(`a-${idx}`)?.value;
+    const h = hEl?.value;
+    const a = aEl?.value;
     if (h===''||h==null||a===''||a==null) {
-      if (ss) { ss.className='save-status unsaved'; ss.textContent='Enter scores'; } return;
+      if (ss) { ss.className='save-status unsaved'; ss.textContent='○ Pending'; } return;
     }
     const match = allMatches.find(m => m.match_index===idx);
     if (match) autoSavePick(match);
@@ -1080,8 +1105,9 @@ async function autoSavePick(match) {
     picked_winner:winner, team1, team2, home_score_pick:h, away_score_pick:a};
   if(ss){ss.className='save-status saved';ss.textContent='✓ Saved';}
   const saved = Object.values(myPicks).filter(p => p.home_score_pick!=null).length;
-  document.getElementById('picks-count').textContent = `${saved}/${allMatches.length} saved`;
-  document.getElementById('picks-bar').style.width = `${(saved/allMatches.length*100).toFixed(0)}%`;
+  const total = allMatches.length;
+  document.getElementById('picks-count').textContent = `${saved}/${total} saved`;
+  document.getElementById('picks-bar').style.width = `${(saved/total*100).toFixed(0)}%`;
 }
 
 // ── Leaderboard ───────────────────────────
@@ -1132,18 +1158,49 @@ async function loadLeaderboard() {
   } finally { document.getElementById('lb-loading').classList.add('hidden'); }
 }
 
+// ── Toast ─────────────────────────────────
+let _toastTimer;
+function showToast(msg, type='', duration=4000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type}`;
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.add('hidden'), duration);
+}
+
 // ── Live update ───────────────────────────
 async function triggerLiveUpdate() {
-  if (!confirm('Fetch latest WC results from football-data.org?')) return;
+  const btn = document.querySelector('.nav-update');
+  if (btn) { btn.textContent = '↻'; btn.disabled = true; }
   try {
     const data = await fetch('/api/update',{method:'POST'}).then(r=>r.json());
-    if(data.error) return alert('Failed: '+data.error);
-    alert(`Updated ${data.updated} result(s).${data.updated>0?' Reloading…':''}`);
-    if(data.updated>0) location.reload();
-  } catch(e){alert('Failed: '+e.message);}
+    if (data.error) { showToast('Update failed: ' + data.error, 'error'); return; }
+    if (data.updated > 0 || data.new_fixtures > 0) {
+      showToast(`Updated ${data.updated} result(s)${data.new_fixtures>0?`, ${data.new_fixtures} new fixture(s) added`:''} — reloading…`, 'success');
+      setTimeout(() => location.reload(), 1800);
+    } else {
+      showToast('Already up to date.');
+    }
+  } catch(e) {
+    showToast('Update failed — check your connection.', 'error');
+  } finally {
+    if (btn) { btn.textContent = '↻ Update'; btn.disabled = false; }
+  }
+}
+
+// Auto-check silently on page load (no toast if nothing changed)
+async function silentUpdate() {
+  try {
+    const data = await fetch('/api/update',{method:'POST'}).then(r=>r.json());
+    if ((data.updated > 0 || data.new_fixtures > 0) && !data.error) {
+      showToast(`${data.updated} result(s) updated — reloading…`, 'success');
+      setTimeout(() => location.reload(), 1800);
+    }
+  } catch(e) {}
 }
 
 init();
+setTimeout(silentUpdate, 5000);
 </script>
 
 

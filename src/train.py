@@ -81,13 +81,13 @@ def train():
 
     goal_model_home = Pipeline([
         ('scaler', StandardScaler()),
-        ('poisson', PoissonRegressor(alpha=0.1, max_iter=300)),
+        ('poisson', PoissonRegressor(alpha=0.001, max_iter=500)),
     ])
     goal_model_home.fit(goal_train[GOAL_FEATURES_HOME], goal_train['home_score'])
 
     goal_model_away = Pipeline([
         ('scaler', StandardScaler()),
-        ('poisson', PoissonRegressor(alpha=0.1, max_iter=300)),
+        ('poisson', PoissonRegressor(alpha=0.001, max_iter=500)),
     ])
     goal_model_away.fit(goal_train[GOAL_FEATURES_AWAY], goal_train['away_score'])
 
