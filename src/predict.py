@@ -78,8 +78,8 @@ def predict_goals(home, away, neutral, goal_model_h, goal_model_a, feat_h, feat_
     p_d  = sum(p for (i, j), p in score_probs.items() if i == j)
     p_aw = sum(p for (i, j), p in score_probs.items() if i < j)
 
-    pred_h = round(lam_h) if lam_h >= 1.0 else 0
-    pred_a = round(lam_a) if lam_a >= 1.0 else 0
+    pred_h = round(lam_h)
+    pred_a = round(lam_a)
     return {
         'home_xg':   round(lam_h, 2),
         'away_xg':   round(lam_a, 2),
