@@ -1199,6 +1199,19 @@ async function silentUpdate() {
   } catch(e) {}
 }
 
+// ── In-app browser detection ──────────────
+const ua = navigator.userAgent || '';
+const isInAppBrowser = /FBAN|FBAV|Instagram|LinkedInApp|Line|Twitter|TikTok|GSA|MicroMessenger/i.test(ua);
+
+if (isInAppBrowser) {
+  document.body.insertAdjacentHTML('afterbegin', `
+    <div style="background:#f59e0b;color:#000;padding:12px;text-align:center;font-size:14px;">
+      For Google sign-in to work, open this page in Safari or Chrome.
+      <strong>Tap the browser icon or "Open in browser" in your app menu.</strong>
+    </div>
+  `);
+}
+
 init();
 setTimeout(silentUpdate, 5000);
 </script>
