@@ -15,7 +15,10 @@ from fastapi.responses import JSONResponse, HTMLResponse
 from pydantic import BaseModel
 import json
 import datetime
+from zoneinfo import ZoneInfo
 import pandas as pd
+
+_PDT = ZoneInfo('America/Los_Angeles')
 
 from predict import (
     load_artifacts, extract_groups, predict_match, predict_goals,
@@ -166,7 +169,7 @@ def get_matches():
     Used by the My Picks tab to render pick forms and show scores.
     """
     today    = datetime.date.today().isoformat()
-    tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
+    now_pdt  = datetime.datetime.now(_PDT)
     df = pd.read_csv(Path(__file__).parent.parent / "data" / "raw" / "results.csv")
     wc = df[(df["tournament"] == "FIFA World Cup") & (df["date"] >= "2026-01-01")]
     wc = wc.sort_values("date").reset_index(drop=True)
@@ -175,6 +178,11 @@ def get_matches():
     for idx, row in wc.iterrows():
         has_result = pd.notna(row.get("home_score"))
         round_val = str(row["round"]) if pd.notna(row.get("round")) else "group"
+        match_date = datetime.date.fromisoformat(str(row["date"]))
+        lock_dt = datetime.datetime.combine(
+            match_date - datetime.timedelta(days=1), datetime.time(23, 59),
+            tzinfo=_PDT
+        )
         result.append({
             "match_id":   f"{row['date']}_{row['home_team']}_{row['away_team']}",
             "match_index": int(idx),
@@ -183,7 +191,7 @@ def get_matches():
             "away_team":  row["away_team"],
             "home_score": int(row["home_score"]) if has_result else None,
             "away_score": int(row["away_score"]) if has_result else None,
-            "is_locked":  bool(str(row["date"]) <= tomorrow or has_result),
+            "is_locked":  bool(has_result or now_pdt >= lock_dt),
             "neutral":    bool(row["neutral"]),
             "city":       row.get("city", ""),
             "round":      round_val,
