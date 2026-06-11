@@ -385,11 +385,11 @@
     "avg_conceded": 2.0
   },
   "Mexico": {
-    "elo": 1853.8678,
-    "form": 0.3,
-    "gd": 0.1,
+    "elo": 1860.8264,
+    "form": 0.4,
+    "gd": 0.3,
     "avg_scored": 1.1,
-    "avg_conceded": 1.0
+    "avg_conceded": 0.8
   },
   "Andalusia": {
     "elo": 1630.6675,
@@ -448,11 +448,11 @@
     "avg_conceded": 1.0
   },
   "South Africa": {
-    "elo": 1631.4137,
+    "elo": 1624.455,
     "form": 0.4,
-    "gd": 0.4,
-    "avg_scored": 1.5,
-    "avg_conceded": 1.1
+    "gd": 0.2,
+    "avg_scored": 1.4,
+    "avg_conceded": 1.2
   },
   "Haiti": {
     "elo": 1597.4817,
