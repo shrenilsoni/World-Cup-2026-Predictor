@@ -47,7 +47,7 @@
         radial-gradient(ellipse 60% 40% at 80% 80%,rgba(124,58,237,.12),transparent),
         linear-gradient(to top,rgba(34,197,94,.22) 0%,rgba(34,197,94,.06) 28%,transparent 55%);
       pointer-events:none}
-    /* Center circle arc — the pitch half-way line visible at hero floor */
+    /* Center circle arc, the pitch half-way line visible at hero floor */
     .hero::after{content:'';position:absolute;bottom:-14%;left:50%;transform:translateX(-50%);
       width:700px;height:350px;border-radius:50%;
       border:2px solid rgba(34,197,94,.25);
@@ -386,18 +386,18 @@
   <section class="quote-section">
     <span class="quote-mark">"</span>
     <p class="quote-text">Football is a game of mistakes. Whoever makes the fewest mistakes wins.</p>
-    <div class="quote-author">— Johan Cruyff</div>
+    <div class="quote-author">- Johan Cruyff</div>
   </section>
 
   <!-- Pick'em focus -->
   <section class="section">
     <h2 class="section-title">Predict. Compete. Win.</h2>
-    <p class="section-sub">The main event — submit score predictions for all WC 2026 matches and climb the leaderboard.</p>
+    <p class="section-sub">The main event. Submit score predictions for all WC 2026 matches and climb the leaderboard.</p>
     <div class="features-grid">
       <div class="feature-card" onclick="showPage('picks')" style="border-color:rgba(79,142,247,.35)">
         <div class="feature-icon">⚽</div>
         <h3>Submit Your Picks</h3>
-        <p>Predict the score for every WC 2026 match. Scores auto-save as you type. Picks lock at <strong>11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span> the night before each match — no changes once match day begins.</p>
+        <p>Predict the score for every WC 2026 match. Scores auto-save as you type. You can make or change a pick anytime before that match kicks off.</p>
         <span class="feature-link">Start predicting →</span>
       </div>
       <div class="feature-card" onclick="showPage('leaderboard')" style="border-color:rgba(79,142,247,.35)">
@@ -433,7 +433,7 @@
         <div class="metric-row"><span class="metric-label">Training data</span><span class="metric-val">9,796 matches</span></div>
         <div class="metric-row"><span class="metric-label">Training window</span><span class="metric-val">2016 – 2026</span></div>
         <div class="metric-row"><span class="metric-label">WC 2026 fixtures</span><span class="metric-val">72 group matches</span></div>
-        <div class="metric-row"><span class="metric-label">Predicted champion</span><span class="metric-val" id="home-champion">— loading</span></div>
+        <div class="metric-row"><span class="metric-label">Predicted champion</span><span class="metric-val" id="home-champion">loading…</span></div>
       </div>
     </div>
   </section>
@@ -463,12 +463,12 @@
     <div id="predict-result" class="card result-card hidden">
       <!-- Teams row -->
       <div class="teams-header">
-        <div class="team-block"><div class="team-name" id="res-home-name">—</div></div>
+        <div class="team-block"><div class="team-name" id="res-home-name">-</div></div>
         <div class="vs-styled">VS</div>
-        <div class="team-block"><div class="team-name" id="res-away-name">—</div></div>
+        <div class="team-block"><div class="team-name" id="res-away-name">-</div></div>
       </div>
 
-      <!-- Predicted score — prominent -->
+      <!-- Predicted score, prominent -->
       <div id="score-prediction" class="score-prediction-block hidden">
         <div class="score-pred-label">Predicted Score</div>
         <div class="score-pred-display">
@@ -562,8 +562,8 @@
           <div class="user-chip">
             <div class="avatar" id="picks-avatar">?</div>
             <div>
-              <div style="font-weight:600;font-size:.9rem" id="picks-username">—</div>
-              <div style="font-size:.75rem;color:var(--muted)" id="picks-email">—</div>
+              <div style="font-weight:600;font-size:.9rem" id="picks-username">-</div>
+              <div style="font-size:.75rem;color:var(--muted)" id="picks-email">-</div>
             </div>
           </div>
           <div style="display:flex;gap:.6rem">
@@ -581,7 +581,7 @@
       <div id="picks-tab-scores">
         <div class="card">
           <h2>Group Stage Score Predictions</h2>
-          <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Predict the full-time score. For knockout matches, predict after 90 minutes. Extra time and penalties are not counted. Picks auto-save as you type. Locks at <strong style="color:var(--text)">11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span> the night before each match.</p>
+          <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Predict the final score. For knockout matches, include extra time if the match goes to extra time. Penalty shootouts do not count. Picks auto-save as you type, and you can make or change a pick anytime before the kickoff whistle of that match.</p>
           <div class="picks-progress-row">
             <span id="picks-count" style="white-space:nowrap">0 saved</span>
             <div class="progress-bar-track"><div class="progress-bar-fill" id="picks-bar" style="width:0%"></div></div>
@@ -594,7 +594,7 @@
       <div id="picks-tab-groups" class="hidden">
         <div class="card">
           <h2>Group Winner Predictions</h2>
-          <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Pick the team you think finishes <strong style="color:var(--text)">1st</strong> in each group. <strong style="color:var(--win)">+70 points</strong> for each group you get right. All group-winner picks lock together on <strong style="color:var(--text)">June 20, 11:59 PM PT</strong> — well before the final group matches.</p>
+          <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Pick the team you think finishes <strong style="color:var(--text)">1st</strong> in each group. <strong style="color:var(--win)">+70 points</strong> for each group you get right. All group-winner picks lock together on <strong style="color:var(--text)">June 20, 11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span>, well before the final group matches.</p>
           <div class="picks-progress-row">
             <span id="gw-count" style="white-space:nowrap">0/12 selected</span>
             <div class="progress-bar-track"><div class="progress-bar-fill" id="gw-bar" style="width:0%"></div></div>
@@ -671,8 +671,8 @@
           </tbody>
         </table>
       </div>
-      <p style="font-size:.78rem;color:var(--muted)">Tiers are exclusive — only the best matching tier counts. Getting one team's goal count exactly right always outscores a lucky winner guess, even if your predicted winner is wrong.</p>
-      <p style="font-size:.82rem;color:var(--text);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">🏆 <strong>Group Winners:</strong> predict which team finishes 1st in each group for <strong style="color:var(--win)">+70 points</strong> each. Set your picks in the <strong>My Picks → Group Winners</strong> tab; they lock on <strong>June 20, 11:59 PM PT</strong>.</p>
+      <p style="font-size:.78rem;color:var(--muted)">Tiers are exclusive, so only the best matching tier counts. Getting one team's goal count exactly right always outscores a lucky winner guess, even if your predicted winner is wrong.</p>
+      <p style="font-size:.82rem;color:var(--text);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">🏆 <strong>Group Winners:</strong> predict which team finishes 1st in each group for <strong style="color:var(--win)">+70 points</strong> each. Set your picks in the <strong>My Picks → Group Winners</strong> tab. They lock on <strong>June 20, 11:59 PM PT</strong>.</p>
     </div>
 
     <!-- Rankings -->
@@ -737,7 +737,7 @@ function fetchSimData() {
     simData = d.results;
     _simLoaded = true;
     const champ = d.results[0];
-    document.getElementById('home-champion').textContent = champ ? `${champ.team} (${champ.champion_pct}%)` : '—';
+    document.getElementById('home-champion').textContent = champ ? `${champ.team} (${champ.champion_pct}%)` : '-';
     return d;
   }).catch(() => { _simPromise = null; });
   return _simPromise;
@@ -807,7 +807,7 @@ function updatePicksUI() {
   document.getElementById('picks-signin').classList.toggle('hidden', loggedIn);
   document.getElementById('picks-content').classList.toggle('hidden', !loggedIn);
   if (loggedIn) {
-    const name = currentUsername || currentUser?.user_metadata?.full_name || currentUser?.email || '—';
+    const name = currentUsername || currentUser?.user_metadata?.full_name || currentUser?.email || '-';
     document.getElementById('picks-username').textContent = name;
     document.getElementById('picks-email').textContent = currentUser.email;
     document.getElementById('picks-avatar').textContent = name[0].toUpperCase();
@@ -834,7 +834,7 @@ function showUsernameModal() {
 function validateUsername() {
   const val = document.getElementById('username-input').value;
   const err = document.getElementById('username-error');
-  if (val.length > 0 && val.length < 2) { err.textContent='Too short — minimum 2 characters'; err.classList.remove('hidden'); return false; }
+  if (val.length > 0 && val.length < 2) { err.textContent='Too short, minimum 2 characters'; err.classList.remove('hidden'); return false; }
   if (val.length > 0 && !/^[a-zA-Z0-9_]+$/.test(val)) { err.textContent='Only letters, numbers and underscores'; err.classList.remove('hidden'); return false; }
   err.classList.add('hidden'); return true;
 }
@@ -845,7 +845,7 @@ async function saveUsername() {
   const { error } = await sb.from('profiles').upsert({ id: currentUser.id, username, updated_at: new Date().toISOString() });
   if (error) {
     const err = document.getElementById('username-error');
-    err.textContent = error.code==='23505' ? 'Username taken — try another' : error.message;
+    err.textContent = error.code==='23505' ? 'Username taken, try another' : error.message;
     err.classList.remove('hidden'); return;
   }
   currentUsername = username;
@@ -987,7 +987,7 @@ function renderBracket(d) {
   function round(label, matches) {
     return `<div class="b-round"><div class="b-round-label">${label}</div>${matches.map(matchHtml).join('')}</div>`;
   }
-  const champPct = simByTeam[d.champion]?.champion_pct ?? '—';
+  const champPct = simByTeam[d.champion]?.champion_pct ?? '-';
   document.getElementById('bracket-wrap').innerHTML = `<div class="full-bracket">
     <div class="bracket-half left">
       ${round('R32',d.r32.slice(0,8))} ${round('R16',d.r16.slice(0,4))}
@@ -1044,7 +1044,7 @@ async function loadMyPicks() {
       sb.from('bracket_picks').select('*').eq('user_id', currentUser.id)
     ]);
     allMatches = matchData.matches;
-    // Exclude group_winner rows — their match_index (0–11) would otherwise
+    // Exclude group_winner rows. Their match_index (0-11) would otherwise
     // collide with real match picks, which are also keyed by match_index.
     myPicks = Object.fromEntries(
       (picksData.data||[]).filter(p => p.round !== GW_ROUND).map(p => [p.match_index, p])
@@ -1099,7 +1099,7 @@ function renderPickCard(match) {
       actionHtml = `<span class="pts-tag ${cls}">${lbl}<br>+${r.pts}pts</span>`;
     }
   } else if (hasResult) {
-    actionHtml = `<span class="pts-tag pts-zero">No pick — 0pts</span>`;
+    actionHtml = `<span class="pts-tag pts-zero">No pick, 0pts</span>`;
   } else if (locked) {
     actionHtml = `<span style="font-size:.72rem;color:var(--muted)">🔒 Locked</span>`;
   } else {
@@ -1228,9 +1228,9 @@ function renderGroupWinners() {
       badge = 'Final';
       if (myPick) {
         const correct = myPick === g.winner;
-        resultRow = `<div class="gw-result ${correct ? 'correct' : 'wrong'}">${correct ? `✓ Correct — +${gwData.points} pts` : '✗ Wrong — 0 pts'}</div>`;
+        resultRow = `<div class="gw-result ${correct ? 'correct' : 'wrong'}">${correct ? `✓ Correct, +${gwData.points} pts` : '✗ Wrong, 0 pts'}</div>`;
       } else {
-        resultRow = `<div class="gw-result wrong">No pick — 0 pts</div>`;
+        resultRow = `<div class="gw-result wrong">No pick, 0 pts</div>`;
       }
     } else {
       badge = locked ? '🔒 Locked' : (myPick ? '✓ Picked' : 'Pick one');
@@ -1264,7 +1264,7 @@ async function selectGroupWinner(idx, team) {
   if (error) {
     gwPicks[idx] = prev;          // revert on failure
     renderGroupWinners();
-    showToast('Could not save group pick — try again.', 'error');
+    showToast('Could not save group pick, try again.', 'error');
   }
 }
 
@@ -1349,7 +1349,7 @@ async function triggerLiveUpdate() {
       console.warn('Unmapped finished matches (not recorded):', data.unmapped);
     }
     if (data.updated > 0 || data.new_fixtures > 0) {
-      showToast(`Updated ${data.updated} result(s)${data.new_fixtures>0?`, ${data.new_fixtures} new fixture(s) added`:''} — reloading…`, 'success');
+      showToast(`Updated ${data.updated} result(s)${data.new_fixtures>0?`, ${data.new_fixtures} new fixture(s) added`:''}, reloading…`, 'success');
       setTimeout(() => location.reload(), 1800);
     } else if (data.unmapped && data.unmapped.length) {
       showToast(`⚠️ ${data.unmapped.length} finished match(es) couldn't be matched: ${data.unmapped.join(', ')}`, 'error', 8000);
@@ -1357,7 +1357,7 @@ async function triggerLiveUpdate() {
       showToast('Already up to date.');
     }
   } catch(e) {
-    showToast('Update failed — check your connection.', 'error');
+    showToast('Update failed. Check your connection.', 'error');
   } finally {
     if (btn) { btn.textContent = '↻ Update'; btn.disabled = false; }
   }
@@ -1372,7 +1372,7 @@ async function silentUpdate() {
       showToast(`⚠️ ${data.unmapped.length} finished match(es) couldn't be matched: ${data.unmapped.join(', ')}`, 'error', 8000);
     }
     if ((data.updated > 0 || data.new_fixtures > 0) && !data.error) {
-      showToast(`${data.updated} result(s) updated — reloading…`, 'success');
+      showToast(`${data.updated} result(s) updated, reloading…`, 'success');
       setTimeout(() => location.reload(), 1800);
     }
   } catch(e) {}

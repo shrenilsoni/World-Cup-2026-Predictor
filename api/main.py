@@ -511,7 +511,7 @@ def privacy():
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Privacy Policy — World Cup 2026 Predictor</title>
+  <title>Privacy Policy, World Cup 2026 Predictor</title>
   <style>
     body{font-family:system-ui,sans-serif;max-width:700px;margin:60px auto;padding:0 2rem;color:#222;line-height:1.7}
     h1{font-size:1.6rem;margin-bottom:.25rem}
@@ -522,7 +522,7 @@ def privacy():
 </head>
 <body>
   <h1>Privacy Policy</h1>
-  <p><strong>World Cup 2026 Predictor</strong> &mdash; Last updated: June 1, 2026</p>
+  <p><strong>World Cup 2026 Predictor</strong>. Last updated: June 1, 2026</p>
 
   <h2>What we collect</h2>
   <p>We collect your email address and name when you sign in with Google. This is used solely to identify your account and display your username on the leaderboard.</p>
