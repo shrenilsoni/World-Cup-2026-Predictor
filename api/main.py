@@ -20,6 +20,11 @@ import pandas as pd
 
 _PDT = ZoneInfo('America/Los_Angeles')
 
+# Group-winner predictions close ~7 days before the final group-stage match
+# (last group match is 2026-06-27), giving everyone the same early deadline.
+_GROUP_WINNER_LOCK = datetime.datetime(2026, 6, 20, 23, 59, tzinfo=_PDT)
+_GROUP_WINNER_POINTS = 70
+
 # ---------------------------------------------------------------------------
 # Supabase client (service role — server-side only)
 # ---------------------------------------------------------------------------
@@ -391,6 +396,82 @@ def get_groups():
         })
 
     return {"groups": groups_data}
+
+
+def _compute_group_standings():
+    """
+    Compute actual group standings from played results. Returns a list (one
+    entry per group A–L) with the ranked table and the winner (only once all
+    of that group's matches have been played).
+    """
+    df = pd.read_csv(Path(__file__).parent.parent / "data" / "raw" / "results.csv")
+    g = df[
+        (df["tournament"] == "FIFA World Cup")
+        & (df["date"] >= "2026-01-01")
+        & (df["round"].astype(str) == "group")
+    ]
+
+    out = []
+    for i, group in enumerate(groups):
+        members = set(group)
+        stats = {
+            t: {"team": t, "played": 0, "win": 0, "draw": 0, "loss": 0,
+                "gf": 0, "ga": 0, "points": 0}
+            for t in group
+        }
+        played_matches = 0
+        for _, r in g.iterrows():
+            h, a = r["home_team"], r["away_team"]
+            if h not in members or a not in members or pd.isna(r.get("home_score")):
+                continue
+            hs, as_ = int(r["home_score"]), int(r["away_score"])
+            played_matches += 1
+            stats[h]["played"] += 1; stats[a]["played"] += 1
+            stats[h]["gf"] += hs;    stats[h]["ga"] += as_
+            stats[a]["gf"] += as_;   stats[a]["ga"] += hs
+            if hs > as_:
+                stats[h]["points"] += 3; stats[h]["win"] += 1; stats[a]["loss"] += 1
+            elif hs < as_:
+                stats[a]["points"] += 3; stats[a]["win"] += 1; stats[h]["loss"] += 1
+            else:
+                stats[h]["points"] += 1; stats[a]["points"] += 1
+                stats[h]["draw"] += 1;   stats[a]["draw"] += 1
+
+        for s in stats.values():
+            s["gd"] = s["gf"] - s["ga"]
+        # FIFA tiebreakers (simplified): points, goal difference, goals for.
+        # Final tiebreak by name keeps the order deterministic.
+        ranked = sorted(
+            stats.values(),
+            key=lambda s: (-s["points"], -s["gd"], -s["gf"], s["team"]),
+        )
+        n = len(group)
+        expected = n * (n - 1) // 2          # round-robin match count
+        complete = played_matches >= expected
+        out.append({
+            "name":     chr(65 + i),
+            "index":    i,
+            "teams":    list(group),
+            "standings": ranked,
+            "complete": complete,
+            "winner":   ranked[0]["team"] if (complete and ranked) else None,
+        })
+    return out
+
+
+@app.get("/api/group-winners")
+def get_group_winners():
+    """
+    Group-winner prediction data: each group's teams, current standings, the
+    actual winner once the group is complete, plus the shared lock deadline.
+    """
+    now_pdt = datetime.datetime.now(_PDT)
+    return {
+        "groups":    _compute_group_standings(),
+        "lock_at":   _GROUP_WINNER_LOCK.astimezone(datetime.timezone.utc).isoformat(),
+        "is_locked": now_pdt >= _GROUP_WINNER_LOCK,
+        "points":    _GROUP_WINNER_POINTS,
+    }
 
 
 @app.post("/api/update")

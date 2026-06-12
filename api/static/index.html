@@ -122,6 +122,30 @@
     /* ── Knockout soon note ──────────────────── */
     .ko-soon-note{text-align:center;color:var(--muted);font-size:.78rem;padding:1.4rem 1rem;border-top:1px solid var(--border);margin-top:.5rem;line-height:1.6}
     .ko-soon-note strong{color:var(--text)}
+    /* ── My Picks sub-tabs ───────────────────── */
+    .picks-subtabs{display:flex;gap:.4rem;margin-bottom:1.2rem;border-bottom:1px solid var(--border)}
+    .picks-subtab{background:none;border:none;color:var(--muted);font-family:inherit;font-size:.9rem;font-weight:600;padding:.7rem 1.1rem;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s}
+    .picks-subtab:hover{color:var(--text)}
+    .picks-subtab.active{color:var(--accent);border-bottom-color:var(--accent)}
+    /* ── Group winner picks ──────────────────── */
+    .gw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1rem}
+    .gw-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem}
+    .gw-card.locked{opacity:.9}
+    .gw-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem}
+    .gw-title{font-size:.95rem;font-weight:800;letter-spacing:.03em}
+    .gw-badge{font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+    .gw-team{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;background:#0b0f17;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:.55rem .7rem;margin-bottom:.4rem;cursor:pointer;font-family:inherit;font-size:.85rem;transition:border-color .15s,background .15s}
+    .gw-team:last-child{margin-bottom:0}
+    .gw-team:hover:not(:disabled){border-color:var(--accent)}
+    .gw-team.selected{border-color:var(--win);background:rgba(34,197,94,.12);color:var(--win);font-weight:700}
+    .gw-team:disabled{cursor:not-allowed}
+    .gw-radio{width:15px;height:15px;border-radius:50%;border:2px solid var(--muted);flex-shrink:0;display:inline-block}
+    .gw-team.selected .gw-radio{border-color:var(--win);background:var(--win);box-shadow:inset 0 0 0 2px #0b0f17}
+    .gw-team.actual-winner{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+    .gw-spot{font-size:.68rem;color:var(--muted);margin-left:auto}
+    .gw-result{margin-top:.7rem;font-size:.74rem;font-weight:700;text-align:center;border-radius:7px;padding:.45rem}
+    .gw-result.correct{background:rgba(34,197,94,.15);color:var(--win)}
+    .gw-result.wrong{background:rgba(239,68,68,.12);color:var(--loss)}
     /* ── Timezone tooltip ────────────────────── */
     .tz-anchor{position:relative;display:inline-block;vertical-align:middle;cursor:default}
     .tz-info-icon{font-size:.72rem;color:var(--muted);margin-left:.2rem;opacity:.6;font-style:normal}
@@ -548,15 +572,36 @@
           </div>
         </div>
       </div>
-      <div class="card">
-        <h2>Group Stage Score Predictions</h2>
-        <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Predict the full-time score. For knockout matches, predict after 90 minutes. Extra time and penalties are not counted. Picks auto-save as you type. Locks at <strong style="color:var(--text)">11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span> the night before each match.</p>
-        <div class="picks-progress-row">
-          <span id="picks-count" style="white-space:nowrap">0 saved</span>
-          <div class="progress-bar-track"><div class="progress-bar-fill" id="picks-bar" style="width:0%"></div></div>
+
+      <div class="picks-subtabs">
+        <button class="picks-subtab active" id="subtab-scores" onclick="showPicksTab('scores')">Match Scores</button>
+        <button class="picks-subtab" id="subtab-groups" onclick="showPicksTab('groups')">Group Winners</button>
+      </div>
+
+      <div id="picks-tab-scores">
+        <div class="card">
+          <h2>Group Stage Score Predictions</h2>
+          <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Predict the full-time score. For knockout matches, predict after 90 minutes. Extra time and penalties are not counted. Picks auto-save as you type. Locks at <strong style="color:var(--text)">11:59 PM PT</strong><span class="tz-anchor"><i class="tz-info-icon">ⓘ</i><span class="tz-tooltip"><span class="tz-row"><b>ET</b><em>2:59 AM</em></span><span class="tz-row"><b>GMT</b><em>6:59 AM</em></span><span class="tz-row"><b>IST</b><em>12:29 PM</em></span><span class="tz-row"><b>Dubai</b><em>10:59 AM</em></span><span class="tz-row"><b>Malaysia</b><em>2:59 PM</em></span></span></span> the night before each match.</p>
+          <div class="picks-progress-row">
+            <span id="picks-count" style="white-space:nowrap">0 saved</span>
+            <div class="progress-bar-track"><div class="progress-bar-fill" id="picks-bar" style="width:0%"></div></div>
+          </div>
+          <div id="picks-loading" class="loading"><div class="spinner"></div> Loading matches…</div>
+          <div id="picks-list"></div>
         </div>
-        <div id="picks-loading" class="loading"><div class="spinner"></div> Loading matches…</div>
-        <div id="picks-list"></div>
+      </div>
+
+      <div id="picks-tab-groups" class="hidden">
+        <div class="card">
+          <h2>Group Winner Predictions</h2>
+          <p style="color:var(--muted);font-size:.82rem;margin-bottom:1rem">Pick the team you think finishes <strong style="color:var(--text)">1st</strong> in each group. <strong style="color:var(--win)">+70 points</strong> for each group you get right. All group-winner picks lock together on <strong style="color:var(--text)">June 20, 11:59 PM PT</strong> — well before the final group matches.</p>
+          <div class="picks-progress-row">
+            <span id="gw-count" style="white-space:nowrap">0/12 selected</span>
+            <div class="progress-bar-track"><div class="progress-bar-fill" id="gw-bar" style="width:0%"></div></div>
+          </div>
+          <div id="gw-loading" class="loading"><div class="spinner"></div> Loading groups…</div>
+          <div id="gw-list" class="gw-grid"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -627,6 +672,7 @@
         </table>
       </div>
       <p style="font-size:.78rem;color:var(--muted)">Tiers are exclusive — only the best matching tier counts. Getting one team's goal count exactly right always outscores a lucky winner guess, even if your predicted winner is wrong.</p>
+      <p style="font-size:.82rem;color:var(--text);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">🏆 <strong>Group Winners:</strong> predict which team finishes 1st in each group for <strong style="color:var(--win)">+70 points</strong> each. Set your picks in the <strong>My Picks → Group Winners</strong> tab; they lock on <strong>June 20, 11:59 PM PT</strong>.</p>
     </div>
 
     <!-- Rankings -->
@@ -637,7 +683,7 @@
         <table>
           <thead><tr>
             <th>#</th><th style="text-align:left">Username</th>
-            <th>Points</th><th>Exact</th><th>Partial</th><th>Result</th><th>Picks</th>
+            <th>Points</th><th>Exact</th><th>Partial</th><th>Result</th><th title="Group winners correctly predicted (+70 each)">Groups</th><th>Picks</th>
           </tr></thead>
           <tbody id="lb-tbody"></tbody>
         </table>
@@ -988,6 +1034,8 @@ function computePoints(homeP, awayP, homeA, awayA, isKnockout) {
 // ── My Picks ──────────────────────────────
 async function loadMyPicks() {
   if (!currentUser || !sb) return;
+  _gwLoaded = false;                       // refresh group data next time its tab opens
+  showPicksTab('scores');                  // default to the scores tab
   document.getElementById('picks-loading').classList.remove('hidden');
   document.getElementById('picks-list').innerHTML = '';
   try {
@@ -996,7 +1044,11 @@ async function loadMyPicks() {
       sb.from('bracket_picks').select('*').eq('user_id', currentUser.id)
     ]);
     allMatches = matchData.matches;
-    myPicks = Object.fromEntries((picksData.data||[]).map(p => [p.match_index, p]));
+    // Exclude group_winner rows — their match_index (0–11) would otherwise
+    // collide with real match picks, which are also keyed by match_index.
+    myPicks = Object.fromEntries(
+      (picksData.data||[]).filter(p => p.round !== GW_ROUND).map(p => [p.match_index, p])
+    );
     renderMyPicks();
   } finally { document.getElementById('picks-loading').classList.add('hidden'); }
 }
@@ -1123,6 +1175,99 @@ async function autoSavePick(match) {
   document.getElementById('picks-bar').style.width = `${(saved/total*100).toFixed(0)}%`;
 }
 
+// ── Group Winner Picks ────────────────────
+const GW_ROUND = 'group_winner';
+let gwData = null;          // /api/group-winners payload
+let gwPicks = {};           // group_index -> picked team
+let _gwLoaded = false;
+
+function showPicksTab(tab) {
+  const isGroups = tab === 'groups';
+  document.getElementById('picks-tab-scores').classList.toggle('hidden', isGroups);
+  document.getElementById('picks-tab-groups').classList.toggle('hidden', !isGroups);
+  document.getElementById('subtab-scores').classList.toggle('active', !isGroups);
+  document.getElementById('subtab-groups').classList.toggle('active', isGroups);
+  if (isGroups && !_gwLoaded) loadGroupWinners();
+}
+
+async function loadGroupWinners() {
+  if (!currentUser || !sb) return;
+  _gwLoaded = true;
+  document.getElementById('gw-loading').classList.remove('hidden');
+  document.getElementById('gw-list').innerHTML = '';
+  try {
+    const [gwResp, picksResp] = await Promise.all([
+      fetch('/api/group-winners').then(r => r.json()),
+      sb.from('bracket_picks').select('*').eq('user_id', currentUser.id).eq('round', GW_ROUND),
+    ]);
+    gwData = gwResp;
+    gwPicks = Object.fromEntries((picksResp.data || []).map(p => [p.match_index, p.picked_winner]));
+    renderGroupWinners();
+  } finally {
+    document.getElementById('gw-loading').classList.add('hidden');
+  }
+}
+
+function renderGroupWinners() {
+  if (!gwData) return;
+  const locked = gwData.is_locked;
+  const list = document.getElementById('gw-list');
+  list.innerHTML = gwData.groups.map(g => {
+    const myPick = gwPicks[g.index] || null;
+    const teamBtns = g.teams.map(team => {
+      const sel = myPick === team;
+      const isActual = g.complete && g.winner === team;
+      const cls = ['gw-team', sel ? 'selected' : '', isActual ? 'actual-winner' : ''].join(' ').trim();
+      const dis = locked ? 'disabled' : '';
+      return `<button class="${cls}" ${dis} onclick="selectGroupWinner(${g.index}, ${JSON.stringify(team).replace(/"/g,'&quot;')})">
+        <span class="gw-radio"></span><span>${team}</span>${isActual ? '<span class="gw-spot">🏆 winner</span>' : ''}
+      </button>`;
+    }).join('');
+    let badge, resultRow = '';
+    if (g.complete) {
+      badge = 'Final';
+      if (myPick) {
+        const correct = myPick === g.winner;
+        resultRow = `<div class="gw-result ${correct ? 'correct' : 'wrong'}">${correct ? `✓ Correct — +${gwData.points} pts` : '✗ Wrong — 0 pts'}</div>`;
+      } else {
+        resultRow = `<div class="gw-result wrong">No pick — 0 pts</div>`;
+      }
+    } else {
+      badge = locked ? '🔒 Locked' : (myPick ? '✓ Picked' : 'Pick one');
+    }
+    return `<div class="gw-card ${locked ? 'locked' : ''}">
+      <div class="gw-head"><span class="gw-title">Group ${g.name}</span><span class="gw-badge">${badge}</span></div>
+      ${teamBtns}${resultRow}
+    </div>`;
+  }).join('');
+  updateGwProgress();
+}
+
+function updateGwProgress() {
+  const picked = Object.keys(gwPicks).length;
+  const total = gwData ? gwData.groups.length : 12;
+  document.getElementById('gw-count').textContent = `${picked}/${total} selected`;
+  document.getElementById('gw-bar').style.width = `${(picked / total * 100).toFixed(0)}%`;
+}
+
+async function selectGroupWinner(idx, team) {
+  if (!sb || !currentUser || !gwData || gwData.is_locked) return;
+  const prev = gwPicks[idx];
+  gwPicks[idx] = team;            // optimistic
+  renderGroupWinners();
+  const group = gwData.groups.find(g => g.index === idx);
+  const {error} = await sb.from('bracket_picks').upsert({
+    user_id: currentUser.id, round: GW_ROUND, match_index: idx,
+    picked_winner: team, team1: group ? group.name : null, team2: null,
+    home_score_pick: null, away_score_pick: null,
+  }, {onConflict: 'user_id,round,match_index'});
+  if (error) {
+    gwPicks[idx] = prev;          // revert on failure
+    renderGroupWinners();
+    showToast('Could not save group pick — try again.', 'error');
+  }
+}
+
 // ── Leaderboard ───────────────────────────
 async function loadLeaderboard() {
   if (!sb) return;
@@ -1130,18 +1275,29 @@ async function loadLeaderboard() {
   document.getElementById('lb-wrap').classList.add('hidden');
   document.getElementById('lb-empty').classList.add('hidden');
   try {
-    const [matchData, picksData, profilesData] = await Promise.all([
+    const [matchData, picksData, profilesData, gwResp] = await Promise.all([
       fetch('/api/matches').then(r => r.json()),
       sb.from('bracket_picks').select('*'),
       sb.from('profiles').select('id, username'),
+      fetch('/api/group-winners').then(r => r.json()),
     ]);
     const matchMap = Object.fromEntries(matchData.matches.map(m => [m.match_index, m]));
     const profileMap = Object.fromEntries((profilesData.data||[]).map(p => [p.id, p.username]));
+    // Actual group winners (only set once a group is complete).
+    const gwPts = gwResp.points || 70;
+    const gwWinners = Object.fromEntries((gwResp.groups||[]).filter(g=>g.winner).map(g => [g.index, g.winner]));
     const byUser = {};
     (picksData.data||[]).forEach(p => { (byUser[p.user_id]=byUser[p.user_id]||[]).push(p); });
     const rows = Object.entries(byUser).map(([uid, picks]) => {
-      let pts=0,exact=0,partial=0,result=0,scored=0;
+      let pts=0,exact=0,partial=0,result=0,scored=0,groupsCorrect=0,matchPicks=0;
       picks.forEach(pick => {
+        if (pick.round === GW_ROUND) {
+          const actual = gwWinners[pick.match_index];
+          if (actual == null) return;           // group not finished yet
+          if (pick.picked_winner === actual) { pts += gwPts; groupsCorrect++; }
+          return;
+        }
+        matchPicks++;
         const m = matchMap[pick.match_index];
         if (!m||m.home_score==null) return;
         const r = computePoints(pick.home_score_pick, pick.away_score_pick, m.home_score, m.away_score, pick.round!=='group');
@@ -1151,7 +1307,7 @@ async function loadLeaderboard() {
         if(r.tier==='one_win'||r.tier==='one_team') partial++;
         if(r.tier==='result')                        result++;
       });
-      return {uid, username:profileMap[uid]||'Unknown', pts, exact, partial, result, scored, total:picks.length};
+      return {uid, username:profileMap[uid]||'Unknown', pts, exact, partial, result, groupsCorrect, scored, total:matchPicks};
     });
     rows.sort((a,b) => b.pts-a.pts||b.exact-a.exact||b.partial-a.partial);
     if (!rows.length) { document.getElementById('lb-empty').classList.remove('hidden'); return; }
@@ -1164,6 +1320,7 @@ async function loadLeaderboard() {
         <td style="text-align:left">${r.username}${isMe?' <span style="color:var(--muted);font-size:.75rem">(you)</span>':''}</td>
         <td><strong>${r.pts}</strong></td>
         <td>${r.exact}</td><td>${r.partial}</td><td>${r.result}</td>
+        <td>${r.groupsCorrect}</td>
         <td style="color:var(--muted)">${r.scored}/${r.total}</td>
       </tr>`;
     });
