@@ -291,6 +291,10 @@
     .col-wrong{background:rgba(239,68,68,.03)}
     .example-score{font-size:.78rem;color:var(--muted);font-style:italic}
 
+    /* Actual result row inside pick card */
+    .result-row{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.3rem 0 0;border-top:1px solid var(--border);margin-top:.35rem;font-size:.75rem;color:var(--muted)}
+    .result-score{font-weight:800;font-family:'Courier New',monospace;color:var(--text);letter-spacing:.04em;font-size:.82rem}
+
     /* Leaderboard */
     .lb-you td{background:rgba(79,142,247,.06)}
     .lb-you td:nth-child(2){font-weight:700}
@@ -1031,8 +1035,9 @@ function renderPickCard(match) {
   const locked = match.is_locked;
   const hasResult = match.home_score != null;
   const isKO = !!(match.round && match.round !== 'group');
-  const hv = hasResult ? match.home_score : (pick?.home_score_pick ?? '');
-  const av = hasResult ? match.away_score : (pick?.away_score_pick ?? '');
+  // Always show the user's own pick in the inputs, never the actual result
+  const hv = pick?.home_score_pick ?? '';
+  const av = pick?.away_score_pick ?? '';
   let actionHtml = '';
   if (hasResult && pick?.home_score_pick != null) {
     const r = computePoints(pick.home_score_pick, pick.away_score_pick, match.home_score, match.away_score, isKO);
@@ -1049,17 +1054,21 @@ function renderPickCard(match) {
     const isSaved = pick?.home_score_pick != null;
     actionHtml = `<span class="save-status ${isSaved?'saved':'unsaved'}" id="ss-${match.match_index}">${isSaved?'✓ Saved':'○ Pending'}</span>`;
   }
+  const resultRow = hasResult
+    ? `<div class="result-row"><span>Result</span><span class="result-score">${match.home_score} – ${match.away_score}</span></div>`
+    : '';
   return `<div class="pick-card ${locked?'locked':''}">
     <div class="pick-team">${match.home_team}</div>
     <div class="score-box">
-      <input type="number" class="score-input" id="h-${match.match_index}" min="0" max="20" value="${hv}" placeholder="0"
+      <input type="number" class="score-input" id="h-${match.match_index}" min="0" max="20" value="${hv}" placeholder="–"
         ${locked?'disabled':''} oninput="onScoreChange(${match.match_index})">
       <span class="score-sep">–</span>
-      <input type="number" class="score-input" id="a-${match.match_index}" min="0" max="20" value="${av}" placeholder="0"
+      <input type="number" class="score-input" id="a-${match.match_index}" min="0" max="20" value="${av}" placeholder="–"
         ${locked?'disabled':''} oninput="onScoreChange(${match.match_index})">
     </div>
     <div class="pick-team right">${match.away_team}</div>
     <div class="pick-action">${actionHtml}</div>
+    ${resultRow}
   </div>`;
 }
 
@@ -1134,9 +1143,9 @@ async function loadLeaderboard() {
         const r = computePoints(pick.home_score_pick, pick.away_score_pick, m.home_score, m.away_score, pick.round!=='group');
         if (!r) return;
         scored++; pts+=r.pts;
-        if(r.tier==='exact')    exact++;
-        if(r.tier==='one_team') partial++;
-        if(r.tier==='result')   result++;
+        if(r.tier==='exact')                         exact++;
+        if(r.tier==='one_win'||r.tier==='one_team') partial++;
+        if(r.tier==='result')                        result++;
       });
       return {uid, username:profileMap[uid]||'Unknown', pts, exact, partial, result, scored, total:picks.length};
     });

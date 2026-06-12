@@ -36,6 +36,26 @@ def _normalize(name: str) -> str:
     return TEAM_NAME_MAP.get(name, name)
 
 
+def _upsert_to_supabase(home_team: str, away_team: str, match_date: str, home_score: int, away_score: int) -> None:
+    url = os.environ.get("SUPABASE_URL", "")
+    key = os.environ.get("SUPABASE_SERVICE_KEY", "")
+    if not url or not key:
+        return
+    try:
+        from supabase import create_client
+        sb = create_client(url, key)
+        sb.table("match_results").upsert({
+            "match_date":  match_date,
+            "home_team":   home_team,
+            "away_team":   away_team,
+            "home_score":  home_score,
+            "away_score":  away_score,
+        }, on_conflict="match_date,home_team,away_team").execute()
+        print(f"  Supabase: persisted {home_team} {home_score}–{away_score} {away_team}")
+    except Exception as e:
+        print(f"  Supabase upsert warning: {e}")
+
+
 def _fetch_wc_matches(api_key: str, status: str) -> list:
     resp = requests.get(
         "https://api.football-data.org/v4/competitions/WC/matches",
@@ -147,6 +167,8 @@ def update_results(api_key: str) -> dict:
         if mask.any():
             df.loc[mask, "home_score"] = float(hs)
             df.loc[mask, "away_score"] = float(as_)
+            match_date = m["utcDate"][:10]
+            _upsert_to_supabase(home, away, match_date, int(hs), int(as_))
             updated += 1
         else:
             unmapped.append(f"{home} vs {away}")

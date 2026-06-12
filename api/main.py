@@ -20,6 +20,75 @@ import pandas as pd
 
 _PDT = ZoneInfo('America/Los_Angeles')
 
+# ---------------------------------------------------------------------------
+# Supabase client (service role — server-side only)
+# ---------------------------------------------------------------------------
+
+_SB_URL = os.environ.get("SUPABASE_URL", "")
+_SB_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
+_sb = None
+if _SB_URL and _SB_KEY:
+    try:
+        from supabase import create_client
+        _sb = create_client(_SB_URL, _SB_KEY)
+    except Exception as _e:
+        print(f"Supabase init warning: {_e}")
+
+
+def _fetch_supabase_results() -> list:
+    """Return all WC 2026 results stored in Supabase as a list of dicts."""
+    if not _sb:
+        return []
+    try:
+        resp = _sb.table("match_results").select("*").execute()
+        return resp.data or []
+    except Exception as e:
+        print(f"Supabase fetch warning: {e}")
+        return []
+
+
+def _apply_supabase_results() -> None:
+    """
+    On startup: pull any results stored in Supabase, write them into the
+    local results.csv (which starts from the git snapshot), and recompute
+    team_stats so the simulation is correct after a dyno restart.
+    """
+    global team_stats, fixtures
+    rows = _fetch_supabase_results()
+    if not rows:
+        print("  Supabase: no persisted results found.")
+        return
+
+    from features import compute_features
+    csv_path = Path(__file__).parent.parent / "data" / "raw" / "results.csv"
+    df = pd.read_csv(csv_path)
+
+    updated = 0
+    for r in rows:
+        mask = (
+            df["home_team"].str.lower().eq(r["home_team"].lower())
+            & df["away_team"].str.lower().eq(r["away_team"].lower())
+            & df["date"].eq(r["match_date"])
+            & df["home_score"].isna()
+        )
+        if mask.any():
+            df.loc[mask, "home_score"] = float(r["home_score"])
+            df.loc[mask, "away_score"] = float(r["away_score"])
+            updated += 1
+
+    if updated:
+        df.to_csv(csv_path, index=False)
+        df_feat, stats = compute_features(df)
+        df_feat.to_csv(Path(__file__).parent.parent / "data" / "processed" / "matches_with_features.csv", index=False)
+        with open(Path(__file__).parent.parent / "data" / "processed" / "team_stats.json", "w") as fh:
+            json.dump(stats, fh, indent=2)
+        team_stats = stats
+        fixtures = df[df["home_score"].isna()].copy()
+        print(f"  Supabase: applied {updated} persisted result(s) on startup.")
+    else:
+        print(f"  Supabase: {len(rows)} result(s) already in CSV, nothing to apply.")
+
+
 from predict import (
     load_artifacts, extract_groups, predict_match, predict_goals,
     run_monte_carlo, build_group_fixture_lists,
@@ -31,6 +100,8 @@ from live_update import update_results
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     import asyncio
+    print("Applying persisted results from Supabase…")
+    await asyncio.to_thread(_apply_supabase_results)
     print("Warming up simulation cache at startup…")
     await asyncio.to_thread(_get_sim)
     print("Simulation cache ready.")
