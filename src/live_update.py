@@ -20,6 +20,8 @@ TEAM_NAME_MAP = {
     "Curaçao":                   "Curaçao",
     "Congo DR":                  "DR Congo",
     "Czechia":                   "Czech Republic",
+    "Cape Verde Islands":        "Cape Verde",
+    "Türkiye":                   "Turkey",
 }
 
 # football-data.org stage → our round identifier
@@ -106,40 +108,39 @@ def _upsert_to_supabase(home_team: str, away_team: str, match_date: str, home_sc
         print(f"  Supabase upsert warning: {e}")
 
 
-def _fetch_wc_matches(api_key: str, status: str) -> list:
+def _fetch_wc_matches(api_key: str, status: str | None = None) -> list:
+    """Fetch WC matches. Omit `status` to get every match in a single call
+    (the free tier is rate-limited, so we prefer one call over several)."""
+    params = {"status": status} if status else {}
     resp = requests.get(
         "https://api.football-data.org/v4/competitions/WC/matches",
         headers={"X-Auth-Token": api_key.strip()},
-        params={"status": status},
+        params=params,
         timeout=10,
     )
     resp.raise_for_status()
     return resp.json().get("matches", [])
 
 
-def _sync_fixtures(api_key: str, df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
+def _sync_fixtures(api_matches: list, df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
     """
-    Fetch scheduled WC 2026 matches from the API and add any that aren't
-    in the CSV yet (knockout fixtures that appear after the group stage).
-    Returns (updated_df, number_of_new_rows_added).
+    Add any knockout fixtures from the API that aren't in the CSV yet
+    (they appear after the group stage). `api_matches` is the prefetched
+    full match list. Returns (updated_df, number_of_new_rows_added).
     """
-    try:
-        scheduled = _fetch_wc_matches(api_key, "SCHEDULED")
-        tbd = _fetch_wc_matches(api_key, "TIMED")
-        all_upcoming = scheduled + tbd
-    except Exception as e:
-        print(f"  Could not fetch scheduled fixtures: {e}")
-        return df, 0
-
     added = 0
-    for m in all_upcoming:
+    for m in api_matches:
         stage = m.get("stage", "")
         round_val = STAGE_TO_ROUND.get(stage)
         if not round_val or round_val == "group":
             continue  # group stage already in CSV
 
-        home = _normalize(m["homeTeam"]["name"])
-        away = _normalize(m["awayTeam"]["name"])
+        raw_home = m.get("homeTeam", {}).get("name")
+        raw_away = m.get("awayTeam", {}).get("name")
+        if not raw_home or not raw_away:
+            continue  # TBD knockout slot — teams not determined yet
+        home = _normalize(raw_home)
+        away = _normalize(raw_away)
         date = m["utcDate"][:10]  # YYYY-MM-DD
 
         # Skip if TBD placeholders (team name missing or placeholder)
@@ -166,12 +167,53 @@ def _sync_fixtures(api_key: str, df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
             "country":     "USA/Canada/Mexico",
             "neutral":     True,
             "round":       round_val,
+            "kickoff":     m.get("utcDate", ""),  # full ISO UTC timestamp
         }
         df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
         print(f"  Added {round_val.upper()} fixture: {home} vs {away} on {date}")
         added += 1
 
     return df, added
+
+
+def _sync_kickoffs(api_matches: list, df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
+    """
+    Backfill the per-match `kickoff` (full ISO UTC timestamp) for WC 2026
+    fixtures from the prefetched API match list, so each match can lock at
+    its own kickoff time. Matches by resolved team names (date-agnostic).
+    Returns (df, n_filled).
+    """
+    if "kickoff" not in df.columns:
+        df["kickoff"] = ""
+
+    wc_mask = (df["tournament"] == "FIFA World Cup") & (df["date"] >= "2026-01-01")
+    known_teams = sorted(
+        set(df.loc[wc_mask, "home_team"].tolist() + df.loc[wc_mask, "away_team"].tolist())
+    )
+
+    filled = 0
+    for m in api_matches:
+        kickoff = m.get("utcDate", "")
+        raw_home = m.get("homeTeam", {}).get("name")
+        raw_away = m.get("awayTeam", {}).get("name")
+        if not kickoff or not raw_home or not raw_away:
+            continue  # skip TBD knockout fixtures with undetermined teams
+        home, _ = _resolve_team(raw_home, known_teams)
+        away, _ = _resolve_team(raw_away, known_teams)
+        # Order-insensitive: the CSV's home/away can be the reverse of the API's.
+        row_mask = wc_mask & (
+            (df["home_team"].str.lower().eq(home.lower())
+             & df["away_team"].str.lower().eq(away.lower()))
+            | (df["home_team"].str.lower().eq(away.lower())
+               & df["away_team"].str.lower().eq(home.lower()))
+        )
+        # Only fill rows whose kickoff is currently missing or different.
+        needs = row_mask & (df["kickoff"].isna() | (df["kickoff"].astype(str).str.strip() != kickoff))
+        if needs.any():
+            df.loc[row_mask, "kickoff"] = kickoff
+            filled += int(needs.sum())
+
+    return df, filled
 
 
 def update_results(api_key: str) -> dict:
@@ -182,11 +224,14 @@ def update_results(api_key: str) -> dict:
     """
     print("Fetching completed WC 2026 matches...")
     try:
-        finished = _fetch_wc_matches(api_key, "FINISHED")
+        # One call for every match (rate-limit friendly); derive the rest.
+        all_matches = _fetch_wc_matches(api_key)
     except requests.HTTPError as e:
         return {"error": _redact(f"API error: {e}", api_key), "updated": 0}
     except Exception as e:
         return {"error": _redact(e, api_key), "updated": 0}
+
+    finished = [m for m in all_matches if m.get("status") == "FINISHED"]
 
     df = pd.read_csv(ROOT / "data" / "raw" / "results.csv")
 
@@ -219,18 +264,35 @@ def update_results(api_key: str) -> dict:
 
         # Match the WC 2026 fixture by resolved team names (date is ignored:
         # the API's UTC date can be a day off from the CSV's local date).
-        team_mask = (
-            wc_mask
-            & df["home_team"].str.lower().eq(home.lower())
+        # The CSV's home/away designation for neutral-site games can be the
+        # reverse of the API's, so check both orientations and flip the scores
+        # to match the CSV row's orientation.
+        fwd = (
+            df["home_team"].str.lower().eq(home.lower())
             & df["away_team"].str.lower().eq(away.lower())
         )
+        rev = (
+            df["home_team"].str.lower().eq(away.lower())
+            & df["away_team"].str.lower().eq(home.lower())
+        )
+        team_mask = wc_mask & (fwd | rev)
         open_mask = team_mask & df["home_score"].isna()
 
         if open_mask.any():
-            df.loc[open_mask, "home_score"] = float(hs)
-            df.loc[open_mask, "away_score"] = float(as_)
+            open_fwd = open_mask & fwd
+            open_rev = open_mask & rev
+            # Forward rows: scores as-is. Reverse rows: swap home/away scores.
+            df.loc[open_fwd, "home_score"] = float(hs)
+            df.loc[open_fwd, "away_score"] = float(as_)
+            df.loc[open_rev, "home_score"] = float(as_)
+            df.loc[open_rev, "away_score"] = float(hs)
             match_date = m["utcDate"][:10]
-            _upsert_to_supabase(home, away, match_date, int(hs), int(as_))
+            # Persist each matched row in its own CSV orientation.
+            for _, r in df.loc[open_mask].iterrows():
+                _upsert_to_supabase(
+                    r["home_team"], r["away_team"], match_date,
+                    int(r["home_score"]), int(r["away_score"]),
+                )
             updated += 1
         elif team_mask.any():
             already += 1  # result already recorded — benign, not a failure
@@ -245,10 +307,16 @@ def update_results(api_key: str) -> dict:
 
     # Sync any new knockout fixtures
     print("Checking for new knockout fixtures...")
-    df, new_fixtures = _sync_fixtures(api_key, df)
+    df, new_fixtures = _sync_fixtures(all_matches, df)
 
-    if updated > 0 or new_fixtures > 0:
+    # Backfill per-match kickoff times so matches lock at their own start.
+    print("Syncing kickoff times...")
+    df, kickoffs_filled = _sync_kickoffs(all_matches, df)
+
+    if updated > 0 or new_fixtures > 0 or kickoffs_filled > 0:
         df.to_csv(ROOT / "data" / "raw" / "results.csv", index=False)
+        if kickoffs_filled > 0:
+            print(f"  Filled {kickoffs_filled} kickoff time(s).")
         if updated > 0:
             print(f"  Wrote {updated} results. Recomputing features...")
             df_features, current_stats = compute_features(df)
@@ -263,12 +331,13 @@ def update_results(api_key: str) -> dict:
         print(f"  ⚠️  {len(unmapped)} finished match(es) could not be mapped to a fixture.")
 
     return {
-        "updated":       updated,
-        "new_fixtures":  new_fixtures,
-        "skipped":       skipped,
-        "already":       already,
-        "total_from_api": len(finished),
-        "unmapped":      unmapped,
+        "updated":         updated,
+        "new_fixtures":    new_fixtures,
+        "kickoffs_filled": kickoffs_filled,
+        "skipped":         skipped,
+        "already":         already,
+        "total_from_api":  len(finished),
+        "unmapped":        unmapped,
     }
 
 

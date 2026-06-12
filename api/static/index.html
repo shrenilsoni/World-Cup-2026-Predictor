@@ -1080,6 +1080,10 @@ function onScoreChange(idx) {
   const hEl = document.getElementById(`h-${idx}`);
   const aEl = document.getElementById(`a-${idx}`);
   if (hEl && aEl) {
+    // Strip a leading zero once a real digit follows it (01 -> 1)
+    [hEl, aEl].forEach(el => {
+      if (/^0\d/.test(el.value)) el.value = String(parseInt(el.value, 10));
+    });
     if (hEl.value !== '' && aEl.value === '') aEl.value = '0';
     if (aEl.value !== '' && hEl.value === '') hEl.value = '0';
   }

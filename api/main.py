@@ -254,10 +254,18 @@ def get_matches():
         has_result = pd.notna(row.get("home_score"))
         round_val = str(row["round"]) if pd.notna(row.get("round")) else "group"
         match_date = datetime.date.fromisoformat(str(row["date"]))
-        lock_dt = datetime.datetime.combine(
-            match_date - datetime.timedelta(days=1), datetime.time(23, 59),
-            tzinfo=_PDT
-        )
+        # Lock each match at its own kickoff (full UTC timestamp from the API).
+        # Fall back to 11:59 PM PDT the night before if no kickoff is known yet.
+        kickoff = row.get("kickoff")
+        if pd.notna(kickoff) and str(kickoff).strip():
+            lock_dt = datetime.datetime.fromisoformat(
+                str(kickoff).strip().replace("Z", "+00:00")
+            )
+        else:
+            lock_dt = datetime.datetime.combine(
+                match_date - datetime.timedelta(days=1), datetime.time(23, 59),
+                tzinfo=_PDT
+            )
         result.append({
             "match_id":   f"{row['date']}_{row['home_team']}_{row['away_team']}",
             "match_index": int(idx),
@@ -267,6 +275,7 @@ def get_matches():
             "home_score": int(row["home_score"]) if has_result else None,
             "away_score": int(row["away_score"]) if has_result else None,
             "is_locked":  bool(has_result or now_pdt >= lock_dt),
+            "lock_at":    lock_dt.astimezone(datetime.timezone.utc).isoformat(),
             "neutral":    bool(row["neutral"]),
             "city":       row.get("city", ""),
             "round":      round_val,
