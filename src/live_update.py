@@ -34,6 +34,15 @@ STAGE_TO_ROUND = {
 }
 
 
+def _redact(msg: str, secret: str) -> str:
+    """Strip a secret out of an error string before it's surfaced to clients."""
+    text = str(msg)
+    secret = (secret or "").strip()
+    if secret and secret in text:
+        text = text.replace(secret, "***REDACTED***")
+    return text
+
+
 def _normalize(name: str) -> str:
     return TEAM_NAME_MAP.get(name, name)
 
@@ -175,9 +184,9 @@ def update_results(api_key: str) -> dict:
     try:
         finished = _fetch_wc_matches(api_key, "FINISHED")
     except requests.HTTPError as e:
-        return {"error": f"API error: {e}", "updated": 0}
+        return {"error": _redact(f"API error: {e}", api_key), "updated": 0}
     except Exception as e:
-        return {"error": str(e), "updated": 0}
+        return {"error": _redact(e, api_key), "updated": 0}
 
     df = pd.read_csv(ROOT / "data" / "raw" / "results.csv")
 

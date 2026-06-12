@@ -391,9 +391,18 @@ def live_update(x_api_key: str = Header(default=None)):
     if not api_key:
         raise HTTPException(status_code=400, detail="FOOTBALL_DATA_API_KEY not set")
 
-    result = update_results(api_key)
+    try:
+        result = update_results(api_key)
+    except Exception:
+        # Never surface a raw exception — it can contain the API key.
+        print("Live update failed with an unexpected error.")
+        raise HTTPException(status_code=502, detail="Live update failed")
+
     if result.get("error"):
-        raise HTTPException(status_code=502, detail=result["error"])
+        # update_results already redacts the key, but redact again defensively
+        # in case the key ever leaks into the message via another path.
+        detail = result["error"].replace(api_key, "***REDACTED***") if api_key else result["error"]
+        raise HTTPException(status_code=502, detail=detail)
 
     if result["updated"] > 0:
         _invalidate_cache()
