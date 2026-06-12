@@ -292,8 +292,8 @@
     .example-score{font-size:.78rem;color:var(--muted);font-style:italic}
 
     /* Actual result row inside pick card */
-    .result-row{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.3rem 0 0;border-top:1px solid var(--border);margin-top:.35rem;font-size:.75rem;color:var(--muted)}
-    .result-score{font-weight:800;font-family:'Courier New',monospace;color:var(--text);letter-spacing:.04em;font-size:.82rem}
+    .result-row{grid-column:2/3;display:flex;align-items:center;justify-content:center;gap:.35rem;padding:.3rem 0 0;border-top:1px solid var(--border);margin-top:.35rem}
+    .result-num{width:40px;padding:.3rem 0;text-align:center;font-size:1rem;font-weight:800;border-radius:6px;background:#0b150b;border:1px solid rgba(34,197,94,.3);color:var(--win);font-family:'Courier New',monospace;display:inline-block}
 
     /* Leaderboard */
     .lb-you td{background:rgba(79,142,247,.06)}
@@ -1055,7 +1055,7 @@ function renderPickCard(match) {
     actionHtml = `<span class="save-status ${isSaved?'saved':'unsaved'}" id="ss-${match.match_index}">${isSaved?'✓ Saved':'○ Pending'}</span>`;
   }
   const resultRow = hasResult
-    ? `<div class="result-row"><span>Result</span><span class="result-score">${match.home_score} – ${match.away_score}</span></div>`
+    ? `<div class="result-row"><span class="result-num">${match.home_score}</span><span class="score-sep">–</span><span class="result-num">${match.away_score}</span></div>`
     : '';
   return `<div class="pick-card ${locked?'locked':''}">
     <div class="pick-team">${match.home_team}</div>
