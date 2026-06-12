@@ -225,6 +225,7 @@
     td:not(:first-child){text-align:center}
     tr:last-child td{border-bottom:none}
     tr:hover td{background:var(--surface2)}
+    .sim-table{table-layout:fixed;width:100%}
 
     /* Groups */
     .groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
@@ -322,6 +323,49 @@
     /* Leaderboard */
     .lb-you td{background:rgba(79,142,247,.06)}
     .lb-you td:nth-child(2){font-weight:700}
+
+    /* ════════ MOBILE ════════ */
+    /* Hamburger toggle is hidden on desktop, shown on phones below. */
+    .nav-toggle{display:none;background:none;border:1px solid var(--border);border-radius:8px;color:var(--text);width:40px;height:36px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;padding:0}
+    .nav-toggle span{position:relative;width:18px;height:2px;background:currentColor;border-radius:2px;transition:background .2s}
+    .nav-toggle span::before,.nav-toggle span::after{content:'';position:absolute;left:0;width:18px;height:2px;background:currentColor;border-radius:2px;transition:transform .2s}
+    .nav-toggle span::before{top:-6px}
+    .nav-toggle span::after{top:6px}
+    .nav-toggle.open span{background:transparent}
+    .nav-toggle.open span::before{transform:translateY(6px) rotate(45deg)}
+    .nav-toggle.open span::after{transform:translateY(-6px) rotate(-45deg)}
+
+    @media(max-width:760px){
+      .navbar{padding:0 1rem;gap:.6rem}
+      .nav-toggle{display:flex}
+      /* Turn the link row into a slide-down menu panel. */
+      .nav-links{position:fixed;top:var(--nav-h);left:0;right:0;flex-direction:column;align-items:stretch;gap:.15rem;background:rgba(10,13,20,.98);backdrop-filter:blur(12px);border-bottom:2px solid rgba(34,197,94,.35);padding:.5rem;max-height:0;overflow:hidden;transition:max-height .28s ease;box-shadow:0 12px 30px rgba(0,0,0,.45)}
+      .nav-links.open{max-height:85vh;overflow-y:auto}
+      .nav-link{font-size:1rem;text-align:left;padding:.9rem 1rem;border-radius:8px}
+      .nav-link.active{background:rgba(79,142,247,.12)}
+    }
+
+    @media(max-width:600px){
+      .content{padding-left:1rem;padding-right:1rem}
+      .card{padding:1.1rem}
+      th,td{padding:.45rem .5rem}
+      /* My Picks: stack the two teams so full names show without rotating. */
+      .pick-card{grid-template-columns:1fr auto;grid-template-areas:"home score" "away score" "action action" "result result";gap:.3rem .7rem;padding:.7rem .85rem}
+      .pick-card > .pick-team{grid-area:home}
+      .pick-card > .pick-team.right{grid-area:away;text-align:left}
+      .pick-team{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.25}
+      .score-box{grid-area:score;align-self:center}
+      .pick-action{grid-area:action;text-align:left;min-width:0;margin-top:.15rem}
+      .result-row{grid-area:result}
+      /* Tournament Odds: drop secondary columns so it fits without overlap. */
+      .sim-table{table-layout:auto}
+      #page-simulate col{width:auto!important}
+      #page-simulate th:nth-child(3),#page-simulate td:nth-child(3),
+      #page-simulate th:nth-child(6),#page-simulate td:nth-child(6),
+      #page-simulate th:nth-child(7),#page-simulate td:nth-child(7),
+      #page-simulate th:nth-child(8),#page-simulate td:nth-child(8){display:none}
+      .pct-bar{display:none}
+    }
   </style>
 </head>
 <body>
@@ -350,7 +394,7 @@
       <span class="nav-brand-sub">Predictor</span>
     </span>
   </div>
-  <div class="nav-links">
+  <div class="nav-links" id="nav-links">
     <button class="nav-link active" onclick="showPage('home',this)">Home</button>
     <button class="nav-link" onclick="showPage('predict',this)">Match Predictor</button>
     <button class="nav-link" onclick="showPage('simulate',this)">Tournament Odds</button>
@@ -359,6 +403,7 @@
     <button class="nav-link" onclick="showPage('leaderboard',this)">Leaderboard</button>
   </div>
   <button class="nav-update" onclick="triggerLiveUpdate()" title="Fetch latest match results">↻ Update</button>
+  <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu" aria-expanded="false"><span></span></button>
 </nav>
 
 <!-- ══════════════════ HOME ══════════════════ -->
@@ -512,7 +557,7 @@
     <div id="sim-result" class="card hidden">
       <h2>Results <span style="font-weight:400;color:var(--muted);font-size:.85rem" id="sim-subtitle"></span></h2>
       <div style="overflow-x:auto">
-        <table style="table-layout:fixed;width:100%">
+        <table class="sim-table">
           <colgroup>
             <col style="width:40px">
             <col style="width:22%">
@@ -710,8 +755,18 @@ let _bracketLoaded = false, _simLoaded = false;
 // ── Navigation ────────────────────────────
 const KNOWN_PAGES = ['home','predict','simulate','bracket','picks','leaderboard'];
 
+function toggleNavMenu(force) {
+  const links = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  const open = force !== undefined ? force : !links.classList.contains('open');
+  links.classList.toggle('open', open);
+  toggle.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
 function showPage(name, btnEl) {
   if (!KNOWN_PAGES.includes(name)) return;
+  toggleNavMenu(false);   // close the mobile menu on navigation
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
