@@ -49215,7 +49215,7 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,r
 2026-03-31,Netherlands,Ecuador,1.0,1.0,Friendly,Eindhoven,Netherlands,False,,1939.3003943856395,1887.1503713789784,0.7,0.2,2.4,0.3,52.15002300666106,3.2,0.6,0.8,0.3
 2026-03-31,Equatorial Guinea,Madagascar,1.0,1.0,Friendly,Manavgat,Turkey,True,,1457.8308083236427,1486.9760763751397,0.2,0.6,-0.8,0.4,-29.14526805149694,0.8,2.0,1.6,1.6
 2026-06-11,Mexico,South Africa,2.0,0.0,FIFA World Cup,Mexico City,Mexico,False,group,1853.8678015855357,1631.4136633139312,0.3,0.4,0.1,0.4,222.4541382716045,1.1,1.5,1.0,1.1
-2026-06-11,South Korea,Czech Republic,,,FIFA World Cup,Zapopan,Mexico,True,group,1817.336889729955,1753.7549717962527,0.6,0.4,0.3,0.6,63.58191793370224,1.5,1.8,1.2,1.2
+2026-06-11,South Korea,Czech Republic,2.0,1.0,FIFA World Cup,Zapopan,Mexico,True,group,1817.336889729955,1753.7549717962527,0.6,0.4,0.3,0.6,63.58191793370224,1.5,1.8,1.2,1.2
 2026-06-12,Canada,Bosnia and Herzegovina,,,FIFA World Cup,Toronto,Canada,False,group,1812.4193928383188,1630.3699759718613,0.4,0.4,0.7,1.0,182.04941686645748,1.1,2.1,0.4,1.1
 2026-06-12,United States,Paraguay,,,FIFA World Cup,Inglewood,United States,False,group,1810.3859962981728,1797.2123235317429,0.5,0.4,0.1,0.0,13.173672766429945,1.7,1.0,1.6,1.0
 2026-06-13,Australia,Turkey,,,FIFA World Cup,Vancouver,Canada,True,group,1812.8643956176002,1860.7889506849588,0.7,0.7,0.6,0.7,-47.9245550673586,1.5,2.1,0.9,1.4
@@ -49238,8 +49238,8 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,r
 2026-06-17,England,Croatia,,,FIFA World Cup,Arlington,United States,True,group,1941.1581211261248,1902.2120122098247,0.7,0.8,1.7,2.1,38.94610891630009,2.2,2.9,0.5,0.8
 2026-06-17,Portugal,DR Congo,,,FIFA World Cup,Houston,United States,True,group,1947.017851175517,1684.7513519288568,0.6,0.7,1.6,0.9,262.26649924666026,2.6,1.2,1.0,0.3
 2026-06-17,Uzbekistan,Colombia,,,FIFA World Cup,Mexico City,Mexico,True,group,1775.6851990259622,1924.5516891165882,0.4,0.5,0.8,1.1,-148.86649009062603,1.5,2.1,0.7,1.0
-2026-06-18,Czech Republic,South Africa,,,FIFA World Cup,Atlanta,United States,True,group,1753.7549717962527,1624.4550459219506,0.4,0.4,0.6,0.2,129.29992587430206,1.8,1.4,1.2,1.2
-2026-06-18,Mexico,South Korea,,,FIFA World Cup,Zapopan,Mexico,False,group,1860.8264189775164,1817.336889729955,0.4,0.6,0.3,0.3,43.48952924756145,1.1,1.5,0.8,1.2
+2026-06-18,Czech Republic,South Africa,,,FIFA World Cup,Atlanta,United States,True,group,1740.6507722249848,1624.4550459219506,0.3,0.4,0.3,0.2,116.19572630303423,1.7,1.4,1.4,1.2
+2026-06-18,Mexico,South Korea,,,FIFA World Cup,Zapopan,Mexico,False,group,1860.8264189775164,1830.4410893012227,0.4,0.6,0.3,0.2,30.385329676293622,1.1,1.5,0.8,1.3
 2026-06-18,Switzerland,Bosnia and Herzegovina,,,FIFA World Cup,Inglewood,United States,True,group,1850.2375754128989,1630.3699759718613,0.6,0.4,1.7,1.0,219.86759944103756,2.5,2.1,0.8,1.1
 2026-06-18,Canada,Qatar,,,FIFA World Cup,Vancouver,Canada,False,group,1812.4193928383188,1592.5028674988866,0.4,0.1,0.7,-1.0,219.91652533943216,1.1,0.9,0.4,1.9
 2026-06-19,United States,Australia,,,FIFA World Cup,Seattle,United States,False,group,1810.3859962981728,1812.8643956176002,0.5,0.7,0.1,0.6,-2.4783993194273535,1.7,1.5,1.6,0.9
@@ -49265,8 +49265,8 @@ date,home_team,away_team,home_score,away_score,tournament,city,country,neutral,r
 2026-06-24,Scotland,Brazil,,,FIFA World Cup,Miami Gardens,United States,True,group,1738.063655360825,1937.1919746698827,0.5,0.5,0.6,1.0,-199.12831930905782,1.8,1.8,1.2,0.8
 2026-06-24,Bosnia and Herzegovina,Qatar,,,FIFA World Cup,Seattle,United States,True,group,1630.3699759718613,1592.5028674988866,0.4,0.1,1.0,-1.0,37.86710847297468,2.1,0.9,1.1,1.9
 2026-06-24,Morocco,Haiti,,,FIFA World Cup,Atlanta,United States,True,group,1914.1305918047474,1597.4817472464051,0.7,0.3,1.3,0.1,316.64884455834226,1.8,1.2,0.5,1.1
-2026-06-24,South Africa,South Korea,,,FIFA World Cup,Guadalupe,Mexico,True,group,1624.4550459219506,1817.336889729955,0.4,0.6,0.2,0.3,-192.8818438080043,1.4,1.5,1.2,1.2
-2026-06-24,Mexico,Czech Republic,,,FIFA World Cup,Mexico City,Mexico,False,group,1860.8264189775164,1753.7549717962527,0.4,0.4,0.3,0.6,107.0714471812637,1.1,1.8,0.8,1.2
+2026-06-24,South Africa,South Korea,,,FIFA World Cup,Guadalupe,Mexico,True,group,1624.4550459219506,1830.4410893012227,0.4,0.6,0.2,0.2,-205.98604337927213,1.4,1.5,1.2,1.3
+2026-06-24,Mexico,Czech Republic,,,FIFA World Cup,Mexico City,Mexico,False,group,1860.8264189775164,1740.6507722249848,0.4,0.3,0.3,0.3,120.17564675253152,1.1,1.7,0.8,1.4
 2026-06-24,Canada,Switzerland,,,FIFA World Cup,Vancouver,Canada,False,group,1812.4193928383188,1850.2375754128989,0.4,0.6,0.7,1.7,-37.81818257458008,1.1,2.5,0.4,0.8
 2026-06-25,United States,Turkey,,,FIFA World Cup,Inglewood,United States,False,group,1810.3859962981728,1860.7889506849588,0.5,0.7,0.1,0.7,-50.40295438678595,1.7,2.1,1.6,1.4
 2026-06-25,Paraguay,Australia,,,FIFA World Cup,Santa Clara,United States,True,group,1797.2123235317429,1812.8643956176002,0.4,0.7,0.0,0.6,-15.652072085857299,1.0,1.5,1.0,0.9

@@ -1184,9 +1184,14 @@ async function triggerLiveUpdate() {
   try {
     const data = await fetch('/api/update',{method:'POST'}).then(r=>r.json());
     if (data.error) { showToast('Update failed: ' + data.error, 'error'); return; }
+    if (data.unmapped && data.unmapped.length) {
+      console.warn('Unmapped finished matches (not recorded):', data.unmapped);
+    }
     if (data.updated > 0 || data.new_fixtures > 0) {
       showToast(`Updated ${data.updated} result(s)${data.new_fixtures>0?`, ${data.new_fixtures} new fixture(s) added`:''} — reloading…`, 'success');
       setTimeout(() => location.reload(), 1800);
+    } else if (data.unmapped && data.unmapped.length) {
+      showToast(`⚠️ ${data.unmapped.length} finished match(es) couldn't be matched: ${data.unmapped.join(', ')}`, 'error', 8000);
     } else {
       showToast('Already up to date.');
     }
@@ -1201,6 +1206,10 @@ async function triggerLiveUpdate() {
 async function silentUpdate() {
   try {
     const data = await fetch('/api/update',{method:'POST'}).then(r=>r.json());
+    if (data.unmapped && data.unmapped.length) {
+      console.warn('Unmapped finished matches (not recorded):', data.unmapped);
+      showToast(`⚠️ ${data.unmapped.length} finished match(es) couldn't be matched: ${data.unmapped.join(', ')}`, 'error', 8000);
+    }
     if ((data.updated > 0 || data.new_fixtures > 0) && !data.error) {
       showToast(`${data.updated} result(s) updated — reloading…`, 'success');
       setTimeout(() => location.reload(), 1800);

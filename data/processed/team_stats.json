@@ -791,11 +791,11 @@
     "avg_conceded": 0.3
   },
   "South Korea": {
-    "elo": 1817.3369,
+    "elo": 1830.4411,
     "form": 0.6,
-    "gd": 0.3,
+    "gd": 0.2,
     "avg_scored": 1.5,
-    "avg_conceded": 1.2
+    "avg_conceded": 1.3
   },
   "Vietnam": {
     "elo": 1530.1978,
@@ -1722,11 +1722,11 @@
     "avg_conceded": 1.5
   },
   "Czech Republic": {
-    "elo": 1753.755,
-    "form": 0.4,
-    "gd": 0.6,
-    "avg_scored": 1.8,
-    "avg_conceded": 1.2
+    "elo": 1740.6508,
+    "form": 0.3,
+    "gd": 0.3,
+    "avg_scored": 1.7,
+    "avg_conceded": 1.4
   },
   "Bosnia and Herzegovina": {
     "elo": 1630.37,

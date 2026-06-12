@@ -1,6 +1,8 @@
 import json
 import os
 import sys
+import difflib
+import unicodedata
 import requests
 import pandas as pd
 from pathlib import Path
@@ -17,7 +19,7 @@ TEAM_NAME_MAP = {
     "Bosnia-Herzegovina":        "Bosnia and Herzegovina",
     "Curaçao":                   "Curaçao",
     "Congo DR":                  "DR Congo",
-    "Czech Republic/Czechia":    "Czech Republic",
+    "Czechia":                   "Czech Republic",
 }
 
 # football-data.org stage → our round identifier
@@ -34,6 +36,45 @@ STAGE_TO_ROUND = {
 
 def _normalize(name: str) -> str:
     return TEAM_NAME_MAP.get(name, name)
+
+
+def _strip_accents(s: str) -> str:
+    """Lowercase + drop diacritics so 'Curaçao' == 'curacao'."""
+    return "".join(
+        c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c)
+    ).lower().strip()
+
+
+def _resolve_team(name: str, known_teams: list[str]) -> tuple[str, bool]:
+    """
+    Resolve a football-data.org team name to the canonical CSV name.
+
+    Strategy (most reliable first):
+      1. Explicit TEAM_NAME_MAP override.
+      2. Exact case-insensitive match against the known WC team pool.
+      3. Accent-insensitive match (handles diacritic differences).
+      4. Fuzzy match for minor spelling variants (strict cutoff).
+
+    Returns (resolved_name, matched) where ``matched`` is False if no entry in
+    the known pool could be resolved — the caller should treat that as an
+    unmapped failure rather than silently dropping the result.
+    """
+    mapped = _normalize(name)
+
+    by_lower = {t.lower(): t for t in known_teams}
+    if mapped.lower() in by_lower:
+        return by_lower[mapped.lower()], True
+
+    by_accent = {_strip_accents(t): t for t in known_teams}
+    key = _strip_accents(mapped)
+    if key in by_accent:
+        return by_accent[key], True
+
+    close = difflib.get_close_matches(key, list(by_accent.keys()), n=1, cutoff=0.85)
+    if close:
+        return by_accent[close[0]], True
+
+    return mapped, False
 
 
 def _upsert_to_supabase(home_team: str, away_team: str, match_date: str, home_score: int, away_score: int) -> None:
@@ -146,11 +187,20 @@ def update_results(api_key: str) -> dict:
         mask = (df["tournament"] == "FIFA World Cup") & (df["date"] >= "2026-01-01")
         df.loc[mask, "round"] = "group"
 
-    updated, skipped, unmapped = 0, 0, []
+    # Pool of canonical WC 2026 team names to resolve API names against.
+    wc_mask = (df["tournament"] == "FIFA World Cup") & (df["date"] >= "2026-01-01")
+    known_teams = sorted(
+        set(df.loc[wc_mask, "home_team"].tolist() + df.loc[wc_mask, "away_team"].tolist())
+    )
+
+    updated, skipped, already = 0, 0, 0
+    unmapped = []
 
     for m in finished:
-        home = _normalize(m["homeTeam"]["name"])
-        away = _normalize(m["awayTeam"]["name"])
+        raw_home = m["homeTeam"]["name"]
+        raw_away = m["awayTeam"]["name"]
+        home, home_ok = _resolve_team(raw_home, known_teams)
+        away, away_ok = _resolve_team(raw_away, known_teams)
         score = m.get("score", {}).get("fullTime", {})
         hs, as_ = score.get("home"), score.get("away")
 
@@ -158,20 +208,31 @@ def update_results(api_key: str) -> dict:
             skipped += 1
             continue
 
-        mask = (
-            df["home_team"].str.lower().eq(home.lower())
+        # Match the WC 2026 fixture by resolved team names (date is ignored:
+        # the API's UTC date can be a day off from the CSV's local date).
+        team_mask = (
+            wc_mask
+            & df["home_team"].str.lower().eq(home.lower())
             & df["away_team"].str.lower().eq(away.lower())
-            & df["home_score"].isna()
         )
+        open_mask = team_mask & df["home_score"].isna()
 
-        if mask.any():
-            df.loc[mask, "home_score"] = float(hs)
-            df.loc[mask, "away_score"] = float(as_)
+        if open_mask.any():
+            df.loc[open_mask, "home_score"] = float(hs)
+            df.loc[open_mask, "away_score"] = float(as_)
             match_date = m["utcDate"][:10]
             _upsert_to_supabase(home, away, match_date, int(hs), int(as_))
             updated += 1
+        elif team_mask.any():
+            already += 1  # result already recorded — benign, not a failure
         else:
-            unmapped.append(f"{home} vs {away}")
+            # Could not line this finished match up with any WC 2026 fixture.
+            # Surface it loudly so a name/order mismatch never fails silently.
+            detail = f"{raw_home} vs {raw_away} ({hs}-{as_})"
+            if not (home_ok and away_ok):
+                detail += " [unresolved name]"
+            print(f"  ⚠️  UNMAPPED finished match — not recorded: {detail}")
+            unmapped.append(detail)
 
     # Sync any new knockout fixtures
     print("Checking for new knockout fixtures...")
@@ -189,10 +250,14 @@ def update_results(api_key: str) -> dict:
     else:
         print("  No new results or fixtures.")
 
+    if unmapped:
+        print(f"  ⚠️  {len(unmapped)} finished match(es) could not be mapped to a fixture.")
+
     return {
         "updated":       updated,
         "new_fixtures":  new_fixtures,
         "skipped":       skipped,
+        "already":       already,
         "total_from_api": len(finished),
         "unmapped":      unmapped,
     }

@@ -65,10 +65,12 @@ def _apply_supabase_results() -> None:
 
     updated = 0
     for r in rows:
+        # Match on teams + unplayed only (not exact date): football-data's UTC
+        # date can differ from the CSV's local date by a day, and the live
+        # update writes scores by team name alone, so we mirror that here.
         mask = (
             df["home_team"].str.lower().eq(r["home_team"].lower())
             & df["away_team"].str.lower().eq(r["away_team"].lower())
-            & df["date"].eq(r["match_date"])
             & df["home_score"].isna()
         )
         if mask.any():
