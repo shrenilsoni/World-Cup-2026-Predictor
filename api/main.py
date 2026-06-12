@@ -24,8 +24,10 @@ _PDT = ZoneInfo('America/Los_Angeles')
 # Supabase client (service role — server-side only)
 # ---------------------------------------------------------------------------
 
-_SB_URL = os.environ.get("SUPABASE_URL", "")
-_SB_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
+# .strip() guards against trailing newlines/spaces in dashboard-set env vars,
+# which otherwise produce invalid HTTP header values.
+_SB_URL = os.environ.get("SUPABASE_URL", "").strip()
+_SB_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "").strip()
 _sb = None
 if _SB_URL and _SB_KEY:
     try:
@@ -385,7 +387,7 @@ def get_groups():
 @app.post("/api/update")
 def live_update(x_api_key: str = Header(default=None)):
     """Pull latest WC results from football-data.org and invalidate sim cache."""
-    api_key = x_api_key or os.environ.get("FOOTBALL_DATA_API_KEY")
+    api_key = (x_api_key or os.environ.get("FOOTBALL_DATA_API_KEY") or "").strip()
     if not api_key:
         raise HTTPException(status_code=400, detail="FOOTBALL_DATA_API_KEY not set")
 

@@ -78,8 +78,8 @@ def _resolve_team(name: str, known_teams: list[str]) -> tuple[str, bool]:
 
 
 def _upsert_to_supabase(home_team: str, away_team: str, match_date: str, home_score: int, away_score: int) -> None:
-    url = os.environ.get("SUPABASE_URL", "")
-    key = os.environ.get("SUPABASE_SERVICE_KEY", "")
+    url = os.environ.get("SUPABASE_URL", "").strip()
+    key = os.environ.get("SUPABASE_SERVICE_KEY", "").strip()
     if not url or not key:
         return
     try:
@@ -100,7 +100,7 @@ def _upsert_to_supabase(home_team: str, away_team: str, match_date: str, home_sc
 def _fetch_wc_matches(api_key: str, status: str) -> list:
     resp = requests.get(
         "https://api.football-data.org/v4/competitions/WC/matches",
-        headers={"X-Auth-Token": api_key},
+        headers={"X-Auth-Token": api_key.strip()},
         params={"status": status},
         timeout=10,
     )
