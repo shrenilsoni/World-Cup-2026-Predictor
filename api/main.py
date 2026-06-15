@@ -527,6 +527,9 @@ def privacy():
   <h2>What we collect</h2>
   <p>We collect your email address and name when you sign in with Google. This is used solely to identify your account and display your username on the leaderboard.</p>
 
+  <h2>Chat</h2>
+  <p>Messages you post in the leaderboard chat are visible to all signed-in users, shown next to your username. Do not share anything private. Your email is never shown in chat.</p>
+
   <h2>What we don't do</h2>
   <p>We do not sell, share, or rent your personal information to any third party. We do not use your data for advertising.</p>
 
