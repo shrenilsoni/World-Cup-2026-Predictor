@@ -793,6 +793,9 @@ let allTeams = [], simData = [], groupsData = [];
 let currentUser = null, currentUsername = null;
 let allMatches = [], myPicks = {};
 let _bracketLoaded = false, _simLoaded = false;
+// My Picks loads once per session; switching tabs and returning must not
+// re-fetch or scroll back to the top. Reset on login/logout (see setUser/clearUser).
+let _picksLoaded = false, _picksScroll = 0;
 
 // ── Navigation ────────────────────────────
 const KNOWN_PAGES = ['home','predict','simulate','bracket','picks','leaderboard'];
@@ -808,6 +811,9 @@ function toggleNavMenu(force) {
 
 function showPage(name, btnEl) {
   if (!KNOWN_PAGES.includes(name)) return;
+  // Remember the picks scroll position before navigating away so we can
+  // restore it on return instead of jumping to the top.
+  if (sessionStorage.getItem('lastPage') === 'picks') _picksScroll = window.scrollY;
   toggleNavMenu(false);   // close the mobile menu on navigation
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
@@ -817,12 +823,15 @@ function showPage(name, btnEl) {
     const btn = [...document.querySelectorAll('.nav-link')].find(b => b.textContent.toLowerCase().includes(name));
     if (btn) btn.classList.add('active');
   }
-  window.scrollTo(0, 0);
   sessionStorage.setItem('lastPage', name);
   if (name === 'bracket'     && !_bracketLoaded)     loadBracket();
   if (name === 'simulate')                            loadSimulate();
-  if (name === 'picks'       && currentUser)          loadMyPicks();
+  // Load picks only once per session. Returning to the tab keeps the existing
+  // view (scroll position, sub-tab, unsaved inputs) until a real page refresh.
+  if (name === 'picks'       && currentUser && !_picksLoaded) loadMyPicks();
   if (name === 'leaderboard')                       { loadLeaderboard(); loadChat(); }
+  // Restore the picks scroll position; every other page starts at the top.
+  window.scrollTo(0, name === 'picks' && _picksLoaded ? _picksScroll : 0);
 }
 
 // ── Boot ──────────────────────────────────
@@ -889,7 +898,7 @@ async function setUser(user) {
     sessionStorage.removeItem('authRedirectPage');
     sessionStorage.setItem('lastPage', pendingPage);
     showPage(pendingPage);
-  } else if (document.getElementById('page-picks').classList.contains('active')) {
+  } else if (document.getElementById('page-picks').classList.contains('active') && !_picksLoaded) {
     loadMyPicks();
   }
   // Reveal chat if the leaderboard is already on screen
@@ -898,6 +907,7 @@ async function setUser(user) {
 
 function clearUser() {
   currentUser = null; currentUsername = null;
+  _picksLoaded = false; _picksScroll = 0;   // force a fresh load on next sign-in
   teardownChat();
   renderChatAuthState();
   updatePicksUI();
@@ -1151,6 +1161,7 @@ async function loadMyPicks() {
       (picksData.data||[]).filter(p => p.round !== GW_ROUND).map(p => [p.match_index, p])
     );
     renderMyPicks();
+    _picksLoaded = true;
   } finally { document.getElementById('picks-loading').classList.add('hidden'); }
 }
 
