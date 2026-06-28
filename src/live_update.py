@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import tempfile
 import difflib
 import unicodedata
 import requests
@@ -10,6 +11,26 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / 'src'))
 from features import compute_features
+
+
+def atomic_to_csv(df: pd.DataFrame, path) -> None:
+    """Write a CSV atomically (temp file in the same dir + os.replace).
+
+    /api/update is called on every page load and runs in FastAPI's thread pool,
+    so several writers can hit results.csv at once. A plain df.to_csv() can then
+    interleave and leave a half-written file that readers (e.g. /api/matches)
+    fail to parse. os.replace is atomic, so readers always see a complete file.
+    """
+    path = str(path)
+    directory = os.path.dirname(path) or "."
+    fd, tmp = tempfile.mkstemp(dir=directory, suffix=".tmp")
+    os.close(fd)
+    try:
+        df.to_csv(tmp, index=False)
+        os.replace(tmp, path)
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
 
 # football-data.org names → our dataset names
 TEAM_NAME_MAP = {
@@ -319,15 +340,17 @@ def update_results(api_key: str) -> dict:
     df, kickoffs_filled = _sync_kickoffs(all_matches, df)
 
     if updated > 0 or new_fixtures > 0 or kickoffs_filled > 0:
-        df.to_csv(ROOT / "data" / "raw" / "results.csv", index=False)
+        atomic_to_csv(df, ROOT / "data" / "raw" / "results.csv")
         if kickoffs_filled > 0:
             print(f"  Filled {kickoffs_filled} kickoff time(s).")
         if updated > 0:
             print(f"  Wrote {updated} results. Recomputing features...")
             df_features, current_stats = compute_features(df)
-            df_features.to_csv(ROOT / "data" / "processed" / "matches_with_features.csv", index=False)
-            with open(ROOT / "data" / "processed" / "team_stats.json", "w") as f:
+            atomic_to_csv(df_features, ROOT / "data" / "processed" / "matches_with_features.csv")
+            tmp_stats = ROOT / "data" / "processed" / "team_stats.json.tmp"
+            with open(tmp_stats, "w") as f:
                 json.dump(current_stats, f, indent=2)
+            os.replace(tmp_stats, ROOT / "data" / "processed" / "team_stats.json")
             print("  Team stats updated.")
     else:
         print("  No new results or fixtures.")

@@ -185,6 +185,12 @@ def extract_groups(fixtures):
     Reconstruct WC groups by finding 4-team cliques in the fixture graph,
     then reorder to match FIFA's official Group A-L labelling.
     """
+    # Knockout fixtures pair teams from different groups; including their edges
+    # would corrupt the 4-team-clique detection below (and drop real groups), so
+    # restrict to group-stage rows when a round column is present.
+    if 'round' in fixtures.columns:
+        fixtures = fixtures[fixtures['round'].isna() | (fixtures['round'] == 'group')]
+
     # Official FIFA WC 2026 group order (December 5, 2025 draw, Kennedy Center, Washington D.C.)
     FIFA_ORDER = [
         {'Mexico', 'South Africa', 'South Korea', 'Czech Republic'},       # A
@@ -467,7 +473,11 @@ def simulate_bracket(firsts, seconds, thirds_with_groups, prob_cache, team_stats
 # ---------------------------------------------------------------------------
 
 def run_monte_carlo(fixtures, groups, model, feature_cols, classes, team_stats, n=10000):
-    all_wc_teams = sorted(set(fixtures['home_team'].tolist() + fixtures['away_team'].tolist()))
+    # Team universe comes from the reconstructed groups (all 48 teams), NOT from
+    # `fixtures`: once the group stage is over, `fixtures` (unplayed matches) no
+    # longer contains eliminated teams, which would drop them from the standings
+    # dicts and raise KeyError mid-simulation.
+    all_wc_teams = sorted({t for g in groups for t in g})
 
     np.random.seed(42)
     print("  Pre-computing match probabilities...")

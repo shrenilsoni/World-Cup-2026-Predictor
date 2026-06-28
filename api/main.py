@@ -86,13 +86,13 @@ def _apply_supabase_results() -> None:
             updated += 1
 
     if updated:
-        df.to_csv(csv_path, index=False)
+        atomic_to_csv(df, csv_path)
         df_feat, stats = compute_features(df)
-        df_feat.to_csv(Path(__file__).parent.parent / "data" / "processed" / "matches_with_features.csv", index=False)
+        atomic_to_csv(df_feat, Path(__file__).parent.parent / "data" / "processed" / "matches_with_features.csv")
         with open(Path(__file__).parent.parent / "data" / "processed" / "team_stats.json", "w") as fh:
             json.dump(stats, fh, indent=2)
         team_stats = stats
-        fixtures = df[df["home_score"].isna()].copy()
+        fixtures = _sim_fixtures(df)
         print(f"  Supabase: applied {updated} persisted result(s) on startup.")
     else:
         print(f"  Supabase: {len(rows)} result(s) already in CSV, nothing to apply.")
@@ -103,7 +103,7 @@ from predict import (
     run_monte_carlo, build_group_fixture_lists,
     _assign_thirds_to_slots
 )
-from live_update import update_results
+from live_update import update_results, atomic_to_csv
 
 
 @asynccontextmanager
@@ -112,8 +112,13 @@ async def lifespan(app: FastAPI):
     print("Applying persisted results from Supabase…")
     await asyncio.to_thread(_apply_supabase_results)
     print("Warming up simulation cache at startup…")
-    await asyncio.to_thread(_get_sim)
-    print("Simulation cache ready.")
+    try:
+        await asyncio.to_thread(_get_sim)
+        print("Simulation cache ready.")
+    except Exception as e:
+        # Never let a simulation problem take down the whole app: My Picks,
+        # the leaderboard, matches, groups and the bracket must still serve.
+        print(f"Simulation cache warm failed, continuing without it: {e}")
     yield
 
 
@@ -129,13 +134,25 @@ def _load_all_wc_fixtures():
     return raw[(raw["tournament"] == "FIFA World Cup") & (raw["date"] >= "2026-01-01")].copy()
 
 
+def _sim_fixtures(df):
+    """The group-stage matches the Monte Carlo replays — played or not. The sim
+    re-plays the whole group stage from scratch, so it needs every group fixture,
+    not just the unplayed ones (which become empty once the group stage ends).
+    Knockout rows are excluded; the bracket is simulated structurally."""
+    wc = df[(df["tournament"] == "FIFA World Cup") & (df["date"] >= "2026-01-01")].copy()
+    if "round" in wc.columns:
+        wc = wc[wc["round"].isna() | (wc["round"] == "group")]
+    return wc
+
+
 artifacts, team_stats, fixtures, goal_model_h, goal_model_a, goal_feat_h, goal_feat_a = load_artifacts()
 model        = artifacts["model"]
 feature_cols = artifacts["features"]
 classes      = artifacts["classes"]
 _all_wc      = _load_all_wc_fixtures()
 groups       = extract_groups(_all_wc)
-wc_teams     = sorted(set(_all_wc["home_team"].tolist() + _all_wc["away_team"].tolist()))
+wc_teams     = sorted({t for g in groups for t in g})
+fixtures     = _sim_fixtures(_all_wc)   # sim replays all group matches, not just unplayed
 
 _sim_cache = None  # invalidated on live update
 _sim_lock = threading.Lock()
@@ -164,10 +181,10 @@ def _invalidate_cache():
         team_stats = json.load(f)
     import pandas as pd
     raw = pd.read_csv(Path(__file__).parent.parent / "data" / "raw" / "results.csv")
-    fixtures = raw[raw["home_score"].isna()].copy()
     _all_wc  = _load_all_wc_fixtures()
     groups   = extract_groups(_all_wc)
-    wc_teams = sorted(set(_all_wc["home_team"].tolist() + _all_wc["away_team"].tolist()))
+    wc_teams = sorted({t for g in groups for t in g})
+    fixtures = _sim_fixtures(raw)
     # Reload goal models from pkl
     new_artifacts, _, _, gm_h, gm_a, gf_h, gf_a = load_artifacts()
     goal_model_h = gm_h
