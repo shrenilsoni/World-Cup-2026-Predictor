@@ -260,6 +260,15 @@ def simulate():
 
 @app.get("/api/matches")
 def get_matches():
+    import traceback as _tb
+    try:
+        return _get_matches_impl()
+    except Exception as e:
+        # TEMP DEBUG: surface the real error instead of a blank 500.
+        return {"error": str(e), "type": type(e).__name__, "traceback": _tb.format_exc()}
+
+
+def _get_matches_impl():
     """
     All WC 2026 matches with results and lock status.
     is_locked = match date has passed OR result already in system.
