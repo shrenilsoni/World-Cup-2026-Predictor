@@ -826,9 +826,14 @@ function showPage(name, btnEl) {
   sessionStorage.setItem('lastPage', name);
   if (name === 'bracket'     && !_bracketLoaded)     loadBracket();
   if (name === 'simulate')                            loadSimulate();
-  // Load picks only once per session. Returning to the tab keeps the existing
-  // view (scroll position, sub-tab, unsaved inputs) until a real page refresh.
-  if (name === 'picks'       && currentUser && !_picksLoaded) loadMyPicks();
+  // First visit loads picks; later visits keep the existing view (scroll
+  // position, sub-tab, unsaved inputs) but quietly check for new matches
+  // (e.g. knockout fixtures published mid-tournament) and re-render only if
+  // the match set actually changed.
+  if (name === 'picks' && currentUser) {
+    if (!_picksLoaded) loadMyPicks();
+    else               refreshPicksMatches();
+  }
   if (name === 'leaderboard')                       { loadLeaderboard(); loadChat(); }
   // Restore the picks scroll position; every other page starts at the top.
   window.scrollTo(0, name === 'picks' && _picksLoaded ? _picksScroll : 0);
@@ -1163,6 +1168,23 @@ async function loadMyPicks() {
     renderMyPicks();
     _picksLoaded = true;
   } finally { document.getElementById('picks-loading').classList.add('hidden'); }
+}
+
+// Background refresh on returning to the My Picks tab: re-fetch the match list
+// (cheap, public) and re-render only when it actually changed, e.g. knockout
+// fixtures get published, a result lands, or a match locks. A normal tab switch
+// where nothing changed leaves the DOM (and scroll/sub-tab/inputs) untouched.
+async function refreshPicksMatches() {
+  if (!currentUser) return;
+  try {
+    const matchData = await fetch('/api/matches').then(r => r.json());
+    const fresh = matchData.matches || [];
+    const sig = ms => ms.map(m => `${m.match_index}:${m.home_score}:${m.away_score}:${m.is_locked}`).join('|');
+    if (sig(fresh) !== sig(allMatches)) {
+      allMatches = fresh;
+      renderMyPicks();   // keeps the current sub-tab; no loading spinner
+    }
+  } catch (e) { /* offline / transient: keep showing what we have */ }
 }
 
 function renderMyPicks() {

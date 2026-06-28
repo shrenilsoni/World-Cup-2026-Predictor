@@ -24,10 +24,15 @@ TEAM_NAME_MAP = {
     "Türkiye":                   "Turkey",
 }
 
-# football-data.org stage → our round identifier
+# football-data.org stage → our round identifier.
+# The API uses LAST_32 / LAST_16 for the first two knockout rounds (not
+# ROUND_OF_32 / ROUND_OF_16); both spellings are mapped so a future API change
+# either way keeps working.
 STAGE_TO_ROUND = {
     "GROUP_STAGE":    "group",
+    "LAST_32":        "r32",
     "ROUND_OF_32":    "r32",
+    "LAST_16":        "r16",
     "ROUND_OF_16":    "r16",
     "QUARTER_FINALS": "qf",
     "SEMI_FINALS":    "sf",
