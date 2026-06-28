@@ -260,15 +260,6 @@ def simulate():
 
 @app.get("/api/matches")
 def get_matches():
-    import traceback as _tb
-    try:
-        return _get_matches_impl()
-    except Exception as e:
-        # TEMP DEBUG: surface the real error instead of a blank 500.
-        return {"error": str(e), "type": type(e).__name__, "traceback": _tb.format_exc()}
-
-
-def _get_matches_impl():
     """
     All WC 2026 matches with results and lock status.
     is_locked = match date has passed OR result already in system.
@@ -327,7 +318,9 @@ def _get_matches_impl():
             "is_locked":  bool(has_result or now_pdt >= lock_dt),
             "lock_at":    lock_dt.astimezone(datetime.timezone.utc).isoformat(),
             "neutral":    bool(row["neutral"]),
-            "city":       row.get("city", ""),
+            # Empty CSV cells read back as NaN; Starlette serializes with
+            # allow_nan=False, so a NaN city would 500 the whole endpoint.
+            "city":       str(row["city"]) if pd.notna(row.get("city")) else "",
             "round":      round_val,
         })
     return {"matches": result, "today": today}
