@@ -251,8 +251,19 @@ def get_matches():
     today    = datetime.date.today().isoformat()
     now_pdt  = datetime.datetime.now(_PDT)
     df = pd.read_csv(Path(__file__).parent.parent / "data" / "raw" / "results.csv")
-    wc = df[(df["tournament"] == "FIFA World Cup") & (df["date"] >= "2026-01-01")]
-    wc = wc.sort_values("date").reset_index(drop=True)
+    wc = df[(df["tournament"] == "FIFA World Cup") & (df["date"] >= "2026-01-01")].copy()
+    # match_index is positional and picks are keyed by it, so adding rows must
+    # never shift an existing index. A plain sort_values("date") over all rows
+    # is UNSTABLE: when knockout fixtures are appended, same-date ties reshuffle
+    # and every affected group pick is silently remapped to the wrong match.
+    # Fix: sort the group matches in isolation (preserving their original
+    # 0..71 positions) and append knockout rounds after, ordered by round.
+    _ROUND_RANK = {"group": 0, "r32": 1, "r16": 2, "qf": 3, "sf": 4, "3rd": 5, "final": 6}
+    wc["round"] = wc["round"].where(wc["round"].notna(), "group")
+    wc["_rank"] = wc["round"].map(lambda r: _ROUND_RANK.get(str(r), 0))
+    groups    = wc[wc["_rank"] == 0].sort_values("date")
+    knockouts = wc[wc["_rank"] >  0].sort_values(["_rank", "date", "home_team", "away_team"])
+    wc = pd.concat([groups, knockouts], ignore_index=True)
 
     result = []
     for idx, row in wc.iterrows():
