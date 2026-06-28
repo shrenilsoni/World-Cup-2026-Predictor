@@ -286,19 +286,27 @@ def get_matches():
     for idx, row in wc.iterrows():
         has_result = pd.notna(row.get("home_score"))
         round_val = str(row["round"]) if pd.notna(row.get("round")) else "group"
-        match_date = datetime.date.fromisoformat(str(row["date"]))
+        match_date = datetime.date.fromisoformat(str(row["date"])[:10])
         # Lock each match at its own kickoff (full UTC timestamp from the API).
         # Fall back to 11:59 PM PDT the night before if no kickoff is known yet.
+        night_before = datetime.datetime.combine(
+            match_date - datetime.timedelta(days=1), datetime.time(23, 59), tzinfo=_PDT
+        )
         kickoff = row.get("kickoff")
+        lock_dt = None
         if pd.notna(kickoff) and str(kickoff).strip():
-            lock_dt = datetime.datetime.fromisoformat(
-                str(kickoff).strip().replace("Z", "+00:00")
-            )
-        else:
-            lock_dt = datetime.datetime.combine(
-                match_date - datetime.timedelta(days=1), datetime.time(23, 59),
-                tzinfo=_PDT
-            )
+            try:
+                lock_dt = datetime.datetime.fromisoformat(
+                    str(kickoff).strip().replace("Z", "+00:00")
+                )
+                # A kickoff without an offset parses as naive; comparing it to an
+                # aware `now_pdt` would raise TypeError, so assume UTC.
+                if lock_dt.tzinfo is None:
+                    lock_dt = lock_dt.replace(tzinfo=datetime.timezone.utc)
+            except ValueError:
+                lock_dt = None
+        if lock_dt is None:
+            lock_dt = night_before
         result.append({
             "match_id":   f"{row['date']}_{row['home_team']}_{row['away_team']}",
             "match_index": int(idx),
